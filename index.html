@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="photos, share, post, like" />
+    <meta name="author" content="Антончик Вероника" />
+    <link rel="icon" type="image/svg" href="./images/logos/favicon.png" />
     <link rel="stylesheet" href="./pages/index.css" />
     <title>Mesto</title>
   </head>
@@ -28,14 +31,9 @@
               alt="Аватар пользователя"
             />
             <div class="profile__info">
-              <div class="profile__username-and-button-container">
+              <div class="profile__username-and-edit-button-container">
                 <h2 class="profile__username">Жак-Ив Кусто</h2>
-                <button class="profile__edit-button button">
-                  <img
-                    src="./images/profile/edit_button.svg"
-                    alt="Кнопка редактирования профиля пользователя"
-                  />
-                </button>
+                <button class="profile__edit-button"></button>
               </div>
               <p class="profile__caption">Исследователь океана</p>
             </div>
@@ -43,124 +41,107 @@
           </div>
           <!-- /.profile__main-information -->
 
-          <button class="profile__add-button button">
-            <img
-              src="./images/profile/add_button.svg"
-              alt="Кнопка для добавления новых изображений"
-            />
-          </button>
+          <button class="profile__add-button"></button>
         </section>
         <!-- /.profile -->
 
-        <section class="photo-cards">
-          <ul class="photo-cards-list">
-            <li class="photo-cards-list__item">
+        <section class="photo-cards" aria-label="Фотогалерея пользователя">
+          <ul class="photo-cards__list">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
-                src="./images/photo-cards/karachayevsk.jpg"
+                class="photo-cards__list-item-image"
+                src="./images/photo-cards/karachaevsk.jpg"
                 alt="Сентинский христианский храм на территории Карачаево-Черкесии"
               />
-              <p class="photo-cards-list__item-caption">Карачаевск</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Карачаевск</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
 
-            <li class="photo-cards-list__item">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
+                class="photo-cards__list-item-image"
                 src="./images/photo-cards/elbrus.jpg"
                 alt="Гора Эльбрус во время заката"
               />
-              <p class="photo-cards-list__item-caption">Гора Эльбрус</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Гора Эльбрус</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
 
-            <li class="photo-cards-list__item">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
+                class="photo-cards__list-item-image"
                 src="./images/photo-cards/dombay.jpg"
                 alt="Горы Домбая"
               />
-              <p class="photo-cards-list__item-caption">Домбай</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Домбай</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
 
-            <li class="photo-cards-list__item">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
+                class="photo-cards__list-item-image"
                 src="./images/photo-cards/elbrus.jpg"
                 alt="Гора Эльбрус во время заката"
               />
-              <p class="photo-cards-list__item-caption">Гора Эльбрус</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Гора Эльбрус</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
 
-            <li class="photo-cards-list__item">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
+                class="photo-cards__list-item-image"
                 src="./images/photo-cards/dombay.jpg"
                 alt="Горы Домбая"
               />
-              <p class="photo-cards-list__item-caption">Домбай</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Домбай</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
 
-            <li class="photo-cards-list__item">
+            <li class="photo-cards__list-item">
               <img
-                class="photo-cards-list__item-image"
-                src="./images/photo-cards/karachayevsk.jpg"
+                class="photo-cards__list-item-image"
+                src="./images/photo-cards/karachaevsk.jpg"
                 alt="Сентинский христианский храм на территории Карачаево-Черкесии"
               />
-              <p class="photo-cards-list__item-caption">Карачаево-Черкесия</p>
-              <button class="photo-cards-list__item-button button">
-                <img
-                  class="heart-button_disabled"
-                  class="heart-button_active"
-                  src="./images/heart_button_disabled.svg"
-                  alt="like-button"
-                />
-              </button>
+              <div class="photo-cards__caption-and-like-button-container">
+                <p class="photo-cards__list-item-caption">Карачаево-Черкесия</p>
+                <button
+                  class="photo-cards__like-button photo-cards__like-button_disabled"
+                >
+                </button>
+              </div>
             </li>
-            <!-- /.photo-cards-list__item -->
+            <!-- /.photo-cards__list-item -->
           </ul>
         </section>
         <!-- /.photo-cards -->
@@ -168,9 +149,41 @@
       <!-- /.content -->
 
       <footer class="footer">
-        <p class="footer__copyright">© 2020 Mesto Russia</p>
+        <p class="footer__copyright">© 2022 Mesto Russia</p>
       </footer>
       <!-- /.footer -->
+    </div>
+
+    <div class="popup popup_opened">
+      <div class="popup__container">
+        <button class="popup__close-button"></button>
+        <div class="popup__content">
+          <p class="popup__title">Редактировать профиль</p>
+          <form class="popup__form popup__form_content_profile">
+            <label for="profile-name"
+              ><input
+                class="popup__form-item popup__form-item_action_text"
+                type="text"
+                name="profile-name"
+                id="profile-name"
+                placeholder="Имя"
+            /></label>
+
+            <label for="profile-caption"
+              ><input
+                class="popup__form-item popup__form-item_action_text"
+                type="text"
+                name="profile-caption"
+                placeholder="О себе"
+                id="profile-caption"
+            /></label>
+
+            <button class="popup__submit-button" type="submit" value="Сохранить"
+              >Сохранить</button
+            >
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>

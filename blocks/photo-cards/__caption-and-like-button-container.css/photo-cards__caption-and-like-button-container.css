@@ -1,0 +1,6 @@
+.photo-cards__caption-and-like-button-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 23px 20px 25px 22px;
+  align-items: center;
+}

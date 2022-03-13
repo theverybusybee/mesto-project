@@ -2,3 +2,16 @@
   max-width: 880px;
   margin: 0 auto;
 }
+
+@media screen and (max-width: 918px) {
+  .page__container {
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .page__container {
+    max-width: 282px;
+  }
+}
