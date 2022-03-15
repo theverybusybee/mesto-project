@@ -1,14 +1,40 @@
 .profile__caption {
+  max-width: 500px;
   margin: 0;
   padding-top: 8px;
   font-size: 18px;
   line-height: 1.22;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (max-width: 917px) {
   .profile__caption {
+    max-width: 400px;
     font-size: 14px;
     line-height: 17px;
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .profile__caption {
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 476px) {
+  .profile__caption {
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .profile__caption {
+    max-width: 250px;
   }
 }

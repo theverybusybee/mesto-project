@@ -1,3 +1,9 @@
 .photo-cards {
   padding-top: 50px;
 }
+
+@media screen and (max-width: 320px) {
+  .photo-cards {
+    padding-top: 36px;
+  }
+}

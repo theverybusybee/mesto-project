@@ -4,9 +4,11 @@
   width: 22px;
   height: 19px;
   cursor: pointer;
+  transition: opacity 0.5s ease 0s;
+  background: url(../../../../images/buttons/heart_button_disabled.svg)
+    no-repeat;
 }
 
 .photo-cards__like-button:hover {
   opacity: 0.6;
-  transition: opacity 0.5s ease 0s;
 }

@@ -13,5 +13,7 @@
 @media screen and (max-width: 320px) {
   .page__container {
     max-width: 282px;
+    padding-right: 0;
+    padding-left: 0;
   }
 }

@@ -17,3 +17,5 @@
 - Grid layout;
 - Media queries(@import);
 - Font smoothing.
+
+Ссылка на github: https://theverybusybee.github.io/mesto-project/

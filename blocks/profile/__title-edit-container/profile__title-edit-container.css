@@ -1,0 +1,16 @@
+.profile__title-edit-container {
+  display: flex;
+  gap: 18px;
+}
+
+@media screen and (max-width: 917px) {
+  .profile__title-edit-containe {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .profile__title-edit-containe {
+    padding-left: 25px;
+  }
+}

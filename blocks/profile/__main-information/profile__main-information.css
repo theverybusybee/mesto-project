@@ -4,10 +4,10 @@
   gap: 30px;
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (max-width: 917px) {
   .profile__main-information {
     flex-direction: column;
     justify-content: center;
-    gap: 0;
+    gap: 26px;
   }
 }
