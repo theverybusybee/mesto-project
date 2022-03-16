@@ -6,8 +6,8 @@
 
 @media screen and (max-width: 320px) {
   .header {
-    max-width: 320px;
-    padding-top: 27px;
-    padding-bottom: 28px;
+    width: 100%;
+    padding: 27px 0 28px 27px;
+    box-sizing: border-box;
   }
 }

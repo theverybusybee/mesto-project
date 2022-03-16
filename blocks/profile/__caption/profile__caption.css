@@ -7,9 +7,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 @media screen and (max-width: 917px) {
@@ -22,12 +19,6 @@
 }
 
 @media screen and (max-width: 576px) {
-  .profile__caption {
-    max-width: 300px;
-  }
-}
-
-@media screen and (max-width: 476px) {
   .profile__caption {
     max-width: 300px;
   }
