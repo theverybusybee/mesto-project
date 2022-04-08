@@ -3,4 +3,6 @@
   justify-content: space-between;
   padding: 23px 20px 25px 22px;
   align-items: center;
+  height: 79px;
+  box-sizing: border-box;
 }

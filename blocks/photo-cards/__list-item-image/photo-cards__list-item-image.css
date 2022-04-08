@@ -1,4 +1,9 @@
 .photo-cards__list-item-image {
   width: 100%;
   border-radius: 10px 10px 0 0;
+  height: 282px;
+}
+
+.photo-cards__list-item-image:hover {
+  cursor: pointer;
 }
