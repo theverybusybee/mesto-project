@@ -57,7 +57,11 @@ const captionInput = profileFormElement.querySelector('#profile-caption');
 function editProfile(nameValue, captionValue) {
   profileUsername.textContent = nameValue;
   profileCaption.textContent = captionValue;
+ 
 }
+
+nameInput.value = profileUsername.textContent; // дублирование не оч хорошо, надо с этим чет сделать
+  captionInput.value = profileCaption.textContent;
 
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
 profileSubmitButton.addEventListener('click', function formSubmitHandler (evt) {
@@ -66,6 +70,8 @@ profileSubmitButton.addEventListener('click', function formSubmitHandler (evt) {
   captionInput.value = profileCaption.textContent;
   evt.preventDefault(); 
   closePopup(popupEditProfile);
+  profileUsername.textContent = nameValue;
+  profileCaption.textContent = captionValue;
 });
 
 
@@ -74,29 +80,29 @@ profileSubmitButton.addEventListener('click', function formSubmitHandler (evt) {
 const initialCards = [
   
 {
-  name: 'Архыз',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  name: 'Chrysanthemum',
+  link: 'https://images.unsplash.com/photo-1460039230329-eb070fc6c77c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
 },
 {
-  name: 'Челябинская область',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  name: 'White Cherry',
+  link: 'https://images.unsplash.com/photo-1615280825886-fa817c0a06cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
 },
 {
-  name: 'Иваново',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  name: 'Camomile',
+  link: 'https://images.unsplash.com/photo-1567954130677-1adcd30d0e5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
 },
 {
-  name: 'Камчатка',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  name: 'Camellia',
+  link: 'https://images.unsplash.com/photo-1553669120-546a47f7a7c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
 },
 {
-  name: 'Холмогорский район',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  name: 'Lotus',
+  link: 'https://images.unsplash.com/photo-1616435577207-ca90abc6b732?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80'
 },
 {
-  name: 'Байкал',
-  link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-}
+  name: 'Crocuses',
+  link: 'https://images.unsplash.com/photo-1550595781-9b3686713647?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
+},
 ];
 
 const addPhotoFormElement = document.querySelector('.popup__form_content_addingPhoto') //форма для добавления карточек
@@ -117,7 +123,7 @@ initialCards.forEach ((element) => {
   photocardImage.src = element.link; 
   photocardImage.alt = element.name; 
   photocardCaption.textContent = element.name;
-  cardsContainer.prepend(photocardElement); // располагаем карточки в начале списка
+  cardsContainer.append(photocardElement); // располагаем карточки в начале списка
 
   photocardElement.querySelector('#deleteButton').addEventListener('click', (evt) => {
       evt.target.closest('.photo-cards__list-item').remove();
@@ -141,6 +147,7 @@ function addPhotocard(imageValue, captionValue) {
   const photocardElement = photocardTemplate.querySelector('.photo-cards__list-item').cloneNode(true); // клонируем содержимое template
   const photocardImage = photocardElement.querySelector('.photo-cards__list-item-image');
   const photocardCaption = photocardElement.querySelector('.photo-cards__list-item-caption');
+  const likeButton = photocardElement.querySelector('.photo-cards__like-button');
 
   photocardImage.src = imageValue; // присваиваем src значение imageValue
   photocardImage.alt = captionValue; // присваиваем src значение imageValue
@@ -151,7 +158,6 @@ function addPhotocard(imageValue, captionValue) {
       evt.target.closest('.photo-cards__list-item').remove();
     });
 
-    const likeButton = photocardElement.querySelector('.photo-cards__like-button');
     likeButton.addEventListener('click', (evt) => {
       evt.target.classList.toggle('photo-cards__like-button_active');
     });

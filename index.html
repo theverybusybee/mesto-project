@@ -27,15 +27,17 @@
           <div class="profile__main-information">
             <img
               class="profile__avatar"
-              src="./images/profile/avatar.jpg"
+              src="./images/profile/bee-icon.jpeg"
               alt="Аватар пользователя"
             />
             <div class="profile__info">
               <div class="profile__title-edit-container">
-                <h1 class="profile__username">Жак-Ив Кусто</h1>
+                <h1 class="profile__username">Пчёлка</h1>
                 <button class="profile__edit-button" type="button"></button>
               </div>
-              <p class="profile__caption">Исследователь океана</p>
+              <p class="profile__caption"
+                >Исследовательница пестиков и тычинок</p
+              >
             </div>
             <!-- /.profile__info -->
           </div>
@@ -105,7 +107,7 @@
           class="popup__form popup__form_content_addingPhoto"
           name="edit-profile"
         >
-          <label for="photo-card-caption"
+          <label for="inputForCaption"
             ><input
               id="inputForCaption"
               class="popup__form-item"
@@ -114,7 +116,7 @@
               placeholder="Название"
           /></label>
 
-          <label for="photocard-caption"
+          <label for="inputForPhoto"
             ><input
               id="inputForPhoto"
               class="popup__form-item"
@@ -133,7 +135,7 @@
     <div class="popup popup__photocardPicture">
       <figure class="popup__photocardImageContainer">
         <button class="popup__close-button" type="button"></button>
-        <img class="popup__photocardImage" src="" alt="" />
+        <img class="popup__photocardImage" src="#" alt="#" />
         <figcaption class="popup__photocardCaption"></figcaption>
       </figure>
     </div>
@@ -145,7 +147,7 @@
           id="deleteButton"
           class="photo-cards__delete-button"
         ></button>
-        <img class="photo-cards__list-item-image" src="" alt="" />
+        <img class="photo-cards__list-item-image" src="#" alt="#" />
         <div class="photo-cards__content">
           <h2 class="photo-cards__list-item-caption"></h2>
           <button class="photo-cards__like-button" type="button"></button>
