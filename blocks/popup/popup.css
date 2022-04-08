@@ -5,7 +5,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;

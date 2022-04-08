@@ -46,93 +46,7 @@
         <!-- /.profile -->
 
         <section class="photo-cards" aria-label="Фотогалерея пользователя">
-          <ul class="photo-cards__list">
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/karachaevsk.jpg"
-                alt="Сентинский христианский храм на территории Карачаево-Черкесии"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption">Карачаевск</h2>
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/elbrus.jpg"
-                alt="Гора Эльбрус во время заката"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption">Гора Эльбрус</h2>
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/dombay.jpg"
-                alt="Горы Домбая"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption">Домбай</h2>
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/elbrus.jpg"
-                alt="Гора Эльбрус во время заката"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption">Гора Эльбрус</h2>
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/dombay.jpg"
-                alt="Горы Домбая"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption">Домбай</h2>
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-
-            <li class="photo-cards__list-item">
-              <img
-                class="photo-cards__list-item-image"
-                src="./images/photo-cards/karachaevsk.jpg"
-                alt="Сентинский христианский храм на территории Карачаево-Черкесии"
-              />
-              <div class="photo-cards__content">
-                <h2 class="photo-cards__list-item-caption"
-                  >Карачаево-Черкесия</h2
-                >
-                <button class="photo-cards__like-button" type="button">
-                </button>
-              </div>
-            </li>
-            <!-- /.photo-cards__list-item -->
-          </ul>
+          <ul class="photo-cards__list"></ul>
         </section>
         <!-- /.photo-cards -->
       </main>
@@ -144,7 +58,7 @@
       <!-- /.footer -->
     </div>
 
-    <div class="popup">
+    <div class="popup popup__edit-profile">
       <div class="popup__container">
         <button class="popup__close-button" type="button"></button>
 
@@ -171,11 +85,73 @@
               id="profile-caption"
           /></label>
 
+          <button
+            id="profileSubmitButton"
+            class="popup__submit-button"
+            type="submit"
+            title="Сохранить"
+            >Сохранить</button
+          >
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup__add-photo">
+      <div class="popup__container">
+        <button class="popup__close-button" type="button"></button>
+
+        <h2 class="popup__title">Новое место</h2>
+        <form
+          class="popup__form popup__form_content_addingPhoto"
+          name="edit-profile"
+        >
+          <label for="photo-card-caption"
+            ><input
+              id="inputForCaption"
+              class="popup__form-item"
+              type="text"
+              name="photocard-image"
+              placeholder="Название"
+          /></label>
+
+          <label for="photocard-caption"
+            ><input
+              id="inputForPhoto"
+              class="popup__form-item"
+              type="text"
+              name="photocard-caption"
+              placeholder="Ссылка на картинку"
+          /></label>
+
           <button class="popup__submit-button" type="submit" title="Сохранить"
             >Сохранить</button
           >
         </form>
       </div>
     </div>
+
+    <div class="popup popup__photocardPicture">
+      <figure class="popup__photocardImageContainer">
+        <button class="popup__close-button" type="button"></button>
+        <img class="popup__photocardImage" src="" alt="" />
+        <figcaption class="popup__photocardCaption"></figcaption>
+      </figure>
+    </div>
+
+    <template class="photocardTemplate">
+      <li class="photo-cards__list-item">
+        <button
+          type="button"
+          id="deleteButton"
+          class="photo-cards__delete-button"
+        ></button>
+        <img class="photo-cards__list-item-image" src="" alt="" />
+        <div class="photo-cards__content">
+          <h2 class="photo-cards__list-item-caption"></h2>
+          <button class="photo-cards__like-button" type="button"></button>
+        </div>
+      </li>
+    </template>
+    <script src="./scripts/script.js"></script>
   </body>
 </html>
