@@ -1,6 +1,7 @@
 .photo-cards__list-item-image {
   width: 100%;
   border-radius: 10px 10px 0 0;
+  display: block;
   height: 282px;
 }
 
