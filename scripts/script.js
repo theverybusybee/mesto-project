@@ -1,14 +1,14 @@
 // кнопочки
 const profileEditButton = document.querySelector('.profile__edit-button');
-const profileAddButton = document.querySelector('.profile__add-button');
+const addPhotocardButton = document.querySelector('.profile__add-button');
 
 // попапы
 const popupEditProfile = document.querySelector('.popup__edit-profile');
 const popupAddPhoto = document.querySelector('.popup__add-photo');
 
-const openPhotocard = document.querySelector('.popup__photocardPicture');
-const popupPhotocardImage = openPhotocard.querySelector('.popup__photocardImage');
-const popupPhotocardCaption = openPhotocard.querySelector('.popup__photocardCaption');
+const popupOpenPhotocard = document.querySelector('.popup__photocardPicture');
+const popupPhotocardImage = popupOpenPhotocard.querySelector('.popup__photocardImage');
+const popupPhotocardCaption = popupOpenPhotocard.querySelector('.popup__photocardCaption');
 
 // кнопки закрытия модальных окон
 const popupAddCloseButton = document.querySelector('.popup__add-photo > .popup__container > .popup__close-button');
@@ -17,8 +17,8 @@ const popupPhotocardCloseButton = document.querySelector('.popup__photocardPictu
 
 //форма для добавления карточек
 const addPhotoForm = document.querySelector('.popup__form_content_addingPhoto');
-const placeForImage = document.querySelector('#inputForPhoto');
-const placeForCaption = document.querySelector('#inputForCaption');
+const addPhotoInputImage = document.querySelector('#inputForPhoto');
+const addPhotoInputCaption = document.querySelector('#inputForCaption');
 
 // карточки
 const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
@@ -26,8 +26,8 @@ const photocardTemplate = document.querySelector('.photocardTemplate').content; 
 
 // форма для редактирования профиля
 const editProfileForm = document.querySelector('.popup__form_content_profile');
-const nameInput = editProfileForm.querySelector('#profile-name'); // инпут для имени
-const captionInput = editProfileForm.querySelector('#profile-caption'); // инпут для подписи
+const editProfileInputName = editProfileForm.querySelector('#profile-name'); // инпут для имени
+const editProfileInputCaption = editProfileForm.querySelector('#profile-caption'); // инпут для подписи
 const profileUsername = document.querySelector('.profile__username'); // имя пользователя
 const profileCaption = document.querySelector('.profile__caption'); // подпись пользователя
 
@@ -42,11 +42,11 @@ function openPopup(popupElement) {
 
 profileEditButton.addEventListener('click', function () {
   openPopup(popupEditProfile);
-  nameInput.value = profileUsername.textContent;
-  captionInput.value = profileCaption.textContent;
+  editProfileInputName.value = profileUsername.textContent;
+  editProfileInputCaption.value = profileCaption.textContent;
 });
 
-profileAddButton.addEventListener('click', function () {
+addPhotocardButton.addEventListener('click', function () {
   openPopup(popupAddPhoto);
 });
 
@@ -66,7 +66,7 @@ popupAddCloseButton.addEventListener('click', function () {
 });
 
 popupPhotocardCloseButton.addEventListener('click', function () {
-  closePopup(openPhotocard);
+  closePopup(popupOpenPhotocard);
 });
 
 
@@ -80,8 +80,8 @@ function editProfile(nameValue, captionValue) {
 }
 
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
-editProfileForm.addEventListener('submit', function formSubmitHandler(evt) {
-  editProfile(nameInput.value, captionInput.value);
+editProfileForm.addEventListener('submit', (evt) => {
+  editProfile(editProfileInputName.value, editProfileInputCaption.value);
   evt.preventDefault();
   closePopup(popupEditProfile);
 });
@@ -136,7 +136,7 @@ function createCard(item) {
   });
 
   photocardImage.addEventListener('click', () => {
-    openPopup(openPhotocard);
+    openPopup(popupOpenPhotocard);
     popupPhotocardImage.src = item['link']; // присваиваем src значение imageValue
     popupPhotocardImage.alt = item['name']; // присваиваем src значение imageValue
     popupPhotocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
@@ -156,11 +156,11 @@ function addPhotocard(card) {
   cardsContainer.prepend(photocardElement);
 }
 
-function formSubmitHandler(evt) {
-  addPhotocard({ name: placeForCaption.value, link: placeForImage.value });
+function handleCardFormSubmit(evt) {
+  addPhotocard({ name: addPhotoInputCaption.value, link: addPhotoInputImage.value });
   evt.preventDefault();
   closePopup(popupAddPhoto);
   addPhotoForm.reset();
 }
 
-addPhotoForm.addEventListener('submit', formSubmitHandler);
+addPhotoForm.addEventListener('submit', handleCardFormSubmit);
