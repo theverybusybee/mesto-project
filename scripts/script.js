@@ -1,11 +1,15 @@
+// body
+const page = document.querySelector('.page');
+
 // кнопочки
+const avatarEditButton = document.querySelector('.profile__button-avatar-container');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const addPhotocardButton = document.querySelector('.profile__add-button');
 
 // попапы
+const popupEditAvatar = document.querySelector('.popup__change-avatar');
 const popupEditProfile = document.querySelector('.popup__edit-profile');
 const popupAddPhoto = document.querySelector('.popup__add-photo');
-
 const popupOpenPhotocard = document.querySelector('.popup__photocardPicture');
 const popupPhotocardImage = popupOpenPhotocard.querySelector('.popup__photocardImage');
 const popupPhotocardCaption = popupOpenPhotocard.querySelector('.popup__photocardCaption');
@@ -14,31 +18,46 @@ const popupPhotocardCaption = popupOpenPhotocard.querySelector('.popup__photocar
 const popupAddCloseButton = document.querySelector('.popup__add-photo > .popup__container > .popup__close-button');
 const popupEditCloseButton = document.querySelector('.popup__edit-profile > .popup__container > .popup__close-button');
 const popupPhotocardCloseButton = document.querySelector('.popup__photocardPicture > .popup__photocardImageContainer > .popup__close-button');
+const popupEditAvatarCloseButton = document.querySelector('.popup__change-avatar > .popup__container > .popup__close-button');
 
-//форма для добавления карточек
-const addPhotoForm = document.querySelector('.popup__form_content_addingPhoto');
-const addPhotoInputImage = document.querySelector('#inputForPhoto');
-const addPhotoInputCaption = document.querySelector('#inputForCaption');
+// форма для добавления карточек
+const addPhotoForm = document.forms.addPhoto;
+const addPhotoInputImage = addPhotoForm.elements.photocardImage;
+const addPhotoInputCaption = addPhotoForm.elements.photocardCaption;
 
 // карточки
 const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
 const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template
 
 // форма для редактирования профиля
-const editProfileForm = document.querySelector('.popup__form_content_profile');
-const editProfileInputName = editProfileForm.querySelector('#profile-name'); // инпут для имени
-const editProfileInputCaption = editProfileForm.querySelector('#profile-caption'); // инпут для подписи
+const editProfileForm = document.forms.editProfile;
+const editProfileInputName = editProfileForm.elements.profileName; // инпут для имени
+const editProfileInputCaption = editProfileForm.elements.profileCaption; // инпут для подписи
+
+// данные профиля
 const profileUsername = document.querySelector('.profile__username'); // имя пользователя
 const profileCaption = document.querySelector('.profile__caption'); // подпись пользователя
+const avatar = document.querySelector('.profile__avatar'); // аватар пользователя
 
-
-
+// форма для редактирования аватара
+const editAvatarForm = document.forms.editAvatar;
+const editAvatarInputUrl = editAvatarForm.elements.avatar;
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
 }
+
+avatarEditButton.addEventListener('click', function() {
+  openPopup(popupEditAvatar);
+})
+
+editAvatarForm.addEventListener('submit', function(evt) {
+  avatar.src = editAvatarInputUrl.value;
+  evt.preventDefault();
+  closePopup(popupEditAvatar);
+})
 
 profileEditButton.addEventListener('click', function () {
   openPopup(popupEditProfile);
@@ -53,10 +72,6 @@ addPhotocardButton.addEventListener('click', function () {
 /* -------------------------------- закрытие модального окна -------------------------------*/
 
 
-function closePopup(popupElement) {
-  popupElement.classList.remove('popup_opened');
-}
-
 popupEditCloseButton.addEventListener('click', function () {
   closePopup(popupEditProfile);
 });
@@ -66,6 +81,10 @@ popupAddCloseButton.addEventListener('click', function () {
 });
 
 popupPhotocardCloseButton.addEventListener('click', function () {
+  closePopup(popupOpenPhotocard);
+});
+
+popupEditAvatarCloseButton.addEventListener('click', function () {
   closePopup(popupOpenPhotocard);
 });
 
@@ -164,3 +183,15 @@ function handleCardFormSubmit(evt) {
 }
 
 addPhotoForm.addEventListener('submit', handleCardFormSubmit);
+
+  page.addEventListener('keydown', function(evt) {
+    if ((evt.key === 'Escape')) {
+      closePopup(page.querySelector('.popup_opened'));
+    };
+  });
+
+  page.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('popup')) {
+       closePopup(evt.target);
+    };
+  });

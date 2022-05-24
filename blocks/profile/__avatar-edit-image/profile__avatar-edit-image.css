@@ -1,0 +1,8 @@
+.profile__avatar-edit-image {
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  top: 47px;
+  left: 47px;
+  display: none;
+}

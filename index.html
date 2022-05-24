@@ -25,11 +25,18 @@
       <main class="content">
         <section class="profile">
           <div class="profile__main-information">
-            <img
-              class="profile__avatar"
-              src="./images/profile/bee-icon.jpeg"
-              alt="Аватар пользователя"
-            />
+            <button class="profile__button-avatar-container">
+              <img
+                class="profile__avatar"
+                src="./images/profile/bee-icon.jpeg"
+                alt="Аватар пользователя"
+              />
+              <img
+                class="profile__avatar-edit-image"
+                src="./images/logos/pen.svg"
+                alt="редактировать"
+              />
+            </button>
             <div class="profile__info">
               <div class="profile__title-edit-container">
                 <h1 class="profile__username">Пчёлка</h1>
@@ -67,31 +74,59 @@
         <h2 class="popup__title">Редактировать профиль</h2>
         <form
           class="popup__form popup__form_content_profile"
-          name="edit-profile"
+          name="editProfile"
         >
-          <label for="profile-name"
-            ><input
+          <label for="profile-name">
+            <input
               class="popup__form-item popup__form-item_action_text"
               type="text"
-              name="profile-name"
+              name="profileName"
               id="profile-name"
               placeholder="Имя"
-          /></label>
+            />
+          </label>
 
-          <label for="profile-caption"
-            ><input
+          <label for="profile-caption">
+            <input
               class="popup__form-item popup__form-item_action_text"
               type="text"
-              name="profile-caption"
+              name="profileCaption"
               placeholder="О себе"
               id="profile-caption"
-          /></label>
+            />
+          </label>
 
           <button
             id="profileSubmitButton"
             class="popup__submit-button"
             type="submit"
             title="Сохранить"
+            >Сохранить</button
+          >
+        </form>
+      </div>
+    </div>
+
+    <div class="popup popup__change-avatar">
+      <div class="popup__container">
+        <button class="popup__close-button" type="button"></button>
+
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form
+          class="popup__form popup__form_content_editAvatar"
+          name="editAvatar"
+        >
+          <label for="avatar">
+            <input
+              id="inputForAvatar"
+              class="popup__form-item"
+              type="text"
+              name="avatar"
+              placeholder="Ссылка на картинку"
+            />
+          </label>
+
+          <button class="popup__submit-button" type="submit" title="Сохранить"
             >Сохранить</button
           >
         </form>
@@ -105,25 +140,27 @@
         <h2 class="popup__title">Новое место</h2>
         <form
           class="popup__form popup__form_content_addingPhoto"
-          name="edit-profile"
+          name="addPhoto"
         >
-          <label for="inputForCaption"
-            ><input
+          <label for="inputForCaption">
+            <input
               id="inputForCaption"
               class="popup__form-item"
               type="text"
-              name="photocard-image"
+              name="photocardImage"
               placeholder="Название"
-          /></label>
+            />
+          </label>
 
-          <label for="inputForPhoto"
-            ><input
+          <label for="inputForPhoto">
+            <input
               id="inputForPhoto"
               class="popup__form-item"
               type="text"
-              name="photocard-caption"
+              name="photocardCaption"
               placeholder="Ссылка на картинку"
-          /></label>
+            />
+          </label>
 
           <button class="popup__submit-button" type="submit" title="Сохранить"
             >Сохранить</button
