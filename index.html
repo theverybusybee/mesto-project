@@ -119,6 +119,8 @@
               id="profile-name"
               placeholder="Имя"
               required
+              minlength="2"
+              maxlength="40"
             />
             <span class="popup__form-item-error profile-name-error"></span>
           </label>
@@ -131,6 +133,8 @@
               placeholder="О себе"
               id="profile-caption"
               required
+              minlength="2"
+              maxlength="200"
             />
             <span class="popup__form-item-error profile-caption-error"></span>
           </label>
@@ -166,6 +170,8 @@
               name="photocardImage"
               placeholder="Название"
               required
+              minlength="2"
+              maxlength="30"
             />
             <span
               class="popup__form-item-error photocard-caption-input-error"
@@ -178,8 +184,8 @@
               class="popup__form-item"
               type="url"
               name="photocardCaption"
-              placeholder="Ссылка на картинку"
               required
+              placeholder="Ссылка на картинку"
             />
             <span
               class="popup__form-item-error photocard-image-input-error"
@@ -220,6 +226,7 @@
         </div>
       </li>
     </template>
-    <script src="./scripts/script.js"></script>
+    <script type="module" src="./scripts/script.js"></script>
+    <script type="module" src="./src/card.js"></script>
   </body>
 </html>
