@@ -1,9 +1,13 @@
-export { editProfile }
+export { openPopup, closePopup }
 
-/*--------------------------- редактирование информации 'о себе' --------------------------*/
+/* -------------------------------- открытие модального окна -------------------------------*/
 
-// в функции два параметра, которые изменяют текстовое содержимое в username и caption
-function editProfile(nameValue, captionValue) {
-  profileUsername.textContent = nameValue;
-  profileCaption.textContent = captionValue;
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
+}
+
+/* ------------------------------- закрытие модального окна -------------------------------*/
+
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
 }

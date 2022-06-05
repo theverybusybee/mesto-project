@@ -1,7 +1,6 @@
 import '../pages/index.css';
 import { createCard, handleCardFormSubmit } from './card.js';
-import { editProfile } from "./modal.js";
-import { openPopup, closePopup } from "./utils.js";
+import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
 
 // body
@@ -124,6 +123,14 @@ popupCloseButtons.forEach((button) => {
     };
   });
 
+  /*--------------------------- редактирование информации 'о себе' --------------------------*/
+
+// в функции два параметра, которые изменяют текстовое содержимое в username и caption
+function editProfile(nameValue, captionValue) {
+  profileUsername.textContent = nameValue;
+  profileCaption.textContent = captionValue;
+}
+
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
 editProfileForm.addEventListener('submit', (evt) => {
   editProfile(editProfileInputName.value, editProfileInputCaption.value);
@@ -131,7 +138,7 @@ editProfileForm.addEventListener('submit', (evt) => {
   closePopup(popupEditProfile);
 });
 
-/* -------------------------------- валидация форм -------------------------------- */
+/* ------------------------------------ валидация форм ------------------------------------ */
 
 enableValidation();
 
