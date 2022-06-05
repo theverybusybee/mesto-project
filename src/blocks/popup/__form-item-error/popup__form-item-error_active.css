@@ -1,0 +1,9 @@
+.popup__form-item-error_active {
+  color: #f00;
+  font-size: 12px;
+  line-height: 1;
+  position: absolute;
+  display: block;
+  top: calc(100% + 4px);
+  left: 0;
+}

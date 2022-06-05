@@ -5,9 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="photos, share, post, like" />
-    <meta name="author" content="Антончик Вероника" />
-    <link rel="icon" type="image/svg" href="./images/logos/favicon.png" />
-    <link rel="stylesheet" href="./pages/index.css" />
+    <meta name="author" content="theverybusybee" />
+    <link
+      rel="icon"
+      type="image/svg"
+      href="<%=require('./images/logos/favicon.png')%>"
+    />
     <title>Mesto</title>
   </head>
   <body class="page">
@@ -15,7 +18,7 @@
       <header class="header">
         <img
           class="header__logo"
-          src="./images/logos/logo__mesto_color_white.svg"
+          src="<%=require('./images/logos/logo__mesto_color_white.svg')%>"
           alt="Логотип сервиса
         'Mesto'"
         />
@@ -25,11 +28,18 @@
       <main class="content">
         <section class="profile">
           <div class="profile__main-information">
-            <img
-              class="profile__avatar"
-              src="./images/profile/bee-icon.jpeg"
-              alt="Аватар пользователя"
-            />
+            <button class="profile__button-avatar-container">
+              <img
+                class="profile__avatar"
+                src="<%=require('./images/profile/bee-icon.jpeg')%>"
+                alt="Аватар пользователя"
+              />
+              <img
+                class="profile__avatar-edit-image"
+                src="<%=require('./images/logos/pen.svg')%>"
+                alt="редактировать"
+              />
+            </button>
             <div class="profile__info">
               <div class="profile__title-edit-container">
                 <h1 class="profile__username">Пчёлка</h1>
@@ -60,6 +70,40 @@
       <!-- /.footer -->
     </div>
 
+    <div class="popup popup__change-avatar">
+      <div class="popup__container">
+        <button class="popup__close-button" type="button"></button>
+
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form
+          class="popup__form popup__form_content_editAvatar"
+          name="editAvatar"
+          novalidate
+        >
+          <label class="popup__form-label" for="avatar">
+            <input
+              id="avatar-input"
+              class="popup__form-item"
+              type="url"
+              name="avatar"
+              placeholder="Ссылка на картинку"
+              required
+            />
+            <span class="avatar-input-error"></span>
+          </label>
+
+          <button
+            class="popup__submit-button"
+            disabled
+            type="submit"
+            title="Сохранить"
+          >
+            Сохранить
+          </button>
+        </form>
+      </div>
+    </div>
+
     <div class="popup popup__edit-profile">
       <div class="popup__container">
         <button class="popup__close-button" type="button"></button>
@@ -67,33 +111,46 @@
         <h2 class="popup__title">Редактировать профиль</h2>
         <form
           class="popup__form popup__form_content_profile"
-          name="edit-profile"
+          name="editProfile"
+          novalidate
         >
-          <label for="profile-name"
-            ><input
+          <label class="popup__form-label" for="profile-name">
+            <input
               class="popup__form-item popup__form-item_action_text"
               type="text"
-              name="profile-name"
+              name="profileName"
               id="profile-name"
               placeholder="Имя"
-          /></label>
+              required
+              minlength="2"
+              maxlength="40"
+            />
+            <span class="popup__form-item-error profile-name-error"></span>
+          </label>
 
-          <label for="profile-caption"
-            ><input
+          <label class="popup__form-label" for="profile-caption">
+            <input
               class="popup__form-item popup__form-item_action_text"
               type="text"
-              name="profile-caption"
+              name="profileCaption"
               placeholder="О себе"
               id="profile-caption"
-          /></label>
+              required
+              minlength="2"
+              maxlength="200"
+            />
+            <span class="popup__form-item-error profile-caption-error"></span>
+          </label>
 
           <button
             id="profileSubmitButton"
             class="popup__submit-button"
             type="submit"
+            disabled
             title="Сохранить"
-            >Сохранить</button
           >
+            Сохранить
+          </button>
         </form>
       </div>
     </div>
@@ -105,29 +162,47 @@
         <h2 class="popup__title">Новое место</h2>
         <form
           class="popup__form popup__form_content_addingPhoto"
-          name="edit-profile"
+          name="addPhoto"
+          novalidate
         >
-          <label for="inputForCaption"
-            ><input
-              id="inputForCaption"
+          <label class="popup__form-label" for="inputForCaption">
+            <input
+              id="photocard-caption-input"
               class="popup__form-item"
               type="text"
-              name="photocard-image"
+              name="photocardImage"
               placeholder="Название"
-          /></label>
+              required
+              minlength="2"
+              maxlength="30"
+            />
+            <span
+              class="popup__form-item-error photocard-caption-input-error"
+            ></span>
+          </label>
 
-          <label for="inputForPhoto"
-            ><input
-              id="inputForPhoto"
+          <label class="popup__form-label" for="inputForPhoto">
+            <input
+              id="photocard-image-input"
               class="popup__form-item"
-              type="text"
-              name="photocard-caption"
+              type="url"
+              name="photocardCaption"
+              required
               placeholder="Ссылка на картинку"
-          /></label>
+            />
+            <span
+              class="popup__form-item-error photocard-image-input-error"
+            ></span>
+          </label>
 
-          <button class="popup__submit-button" type="submit" title="Сохранить"
-            >Сохранить</button
+          <button
+            class="popup__submit-button"
+            type="submit"
+            disabled
+            title="Сохранить"
           >
+            Сохранить
+          </button>
         </form>
       </div>
     </div>
@@ -154,6 +229,5 @@
         </div>
       </li>
     </template>
-    <script src="./scripts/script.js"></script>
   </body>
 </html>
