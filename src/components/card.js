@@ -1,5 +1,5 @@
 export { createCard, addPhotocard, handleCardFormSubmit };
-import { openPopup, closePopup } from "./modal.js";
+import { openPopup, closePopup } from "./utils.js";
 
 // карточки
 const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template

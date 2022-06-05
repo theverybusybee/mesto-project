@@ -5,9 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="photos, share, post, like" />
-    <meta name="author" content="Антончик Вероника" />
+    <meta name="author" content="theverybusybee" />
     <link rel="icon" type="image/svg" href="./images/logos/favicon.png" />
-    <link rel="stylesheet" href="./pages/index.css" />
     <title>Mesto</title>
   </head>
   <body class="page">
@@ -15,7 +14,7 @@
       <header class="header">
         <img
           class="header__logo"
-          src="./images/logos/logo__mesto_color_white.svg"
+          src="<%=require('./images/logos/logo__mesto_color_white.svg')%>"
           alt="Логотип сервиса
         'Mesto'"
         />
@@ -28,12 +27,12 @@
             <button class="profile__button-avatar-container">
               <img
                 class="profile__avatar"
-                src="./images/profile/bee-icon.jpeg"
+                src="<%=require('./images/profile/bee-icon.jpeg')%>"
                 alt="Аватар пользователя"
               />
               <img
                 class="profile__avatar-edit-image"
-                src="./images/logos/pen.svg"
+                src="<%=require('./images/logos/pen.svg')%>"
                 alt="редактировать"
               />
             </button>
@@ -226,6 +225,5 @@
         </div>
       </li>
     </template>
-    <script type="module" src="./components/utils.js"></script>
   </body>
 </html>
