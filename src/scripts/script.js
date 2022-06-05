@@ -1,4 +1,5 @@
-import { initialCards, createCard, handleCardFormSubmit } from '../src/card.js';
+import { initialCards, createCard, handleCardFormSubmit, photocardTemplate } from '../src/card.js';
+console.log(photocardTemplate)
 // body
 const page = document.querySelector('.page');
 

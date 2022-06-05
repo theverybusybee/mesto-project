@@ -1,14 +1,13 @@
-/*--------------------------- редактирование информации 'о себе' --------------------------*/
+export { openPopup, closePopup }
 
-// в функции два параметра, которые изменяют текстовое содержимое в username и caption
-function editProfile(nameValue, captionValue) {
-  profileUsername.textContent = nameValue;
-  profileCaption.textContent = captionValue;
+/* -------------------------------- открытие модального окна -------------------------------*/
+
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_opened');
 }
 
-//добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
-editProfileForm.addEventListener('submit', (evt) => {
-  editProfile(editProfileInputName.value, editProfileInputCaption.value);
-  evt.preventDefault();
-  closePopup(popupEditProfile);
-});
+/* ------------------------------- закрытие модального окна -------------------------------*/
+
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_opened');
+}

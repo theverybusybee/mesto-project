@@ -1,19 +1,21 @@
+export { showError, hideError, setCustomErrorMessage, checkInputValidaty, hasInvalidInput, toggleButtonState, setEventListeners, enableValidation }
+
 /* -------------------------------- валидация форм -------------------------------- */
 
 // показываем сообщение об ошибке
-const showError = (formElement, inputElement, errorMessage, selectors) => {
+const showError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add(selectors.inputErrorClass);
+  inputElement.classList.add('popup__form-item_type_error');
   errorElement.textContent = errorMessage;
-  errorElement.classList.add(selectors.errorClass);
+  errorElement.classList.add('popup__form-item-error_active');
 }
 
 // скрываем сообщение об ошибке
-const hideError = (formElement, inputElement, selectors) => {
+const hideError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove(selectors.inputErrorClass);
+  inputElement.classList.remove('popup__form-item_type_error');
   errorElement.textContent = '';
-  errorElement.classList.remove(selectors.errorClass);
+  errorElement.classList.remove('popup__form-item-error_active');
 }
 
 // указываем кастомные сообщения об ошибке в соответствии с макетом
@@ -35,12 +37,12 @@ const setCustomErrorMessage = (inputElement, errorMessage) => {
 }
 
 // проверяем инпут на валидность и в соответсвии с этим показываем/скрываем сообщения об ошибке
-const checkInputValidaty = (formElement, inputElement, selectors) => {
+const checkInputValidaty = (formElement, inputElement) => {
   let errorWarning = '';
   if(!inputElement.validity.valid) {
-    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning), selectors);
+    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning));
   } else {
-    hideError(formElement, inputElement, selectors);
+    hideError(formElement, inputElement);
   }
 }
 
@@ -61,25 +63,27 @@ const toggleButtonState = (inputList, submitButton) => {
 }
 
 // устанавливаем обработчики событий на все элементы форм
-const setEventListeners = (formElement, selectors) => {
-  const inputList = Array.from(formElement.querySelectorAll(selectors.inputSelector));
-  const submitButton = formElement.querySelector(selectors.submitButtonSelector);
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__form-item'));
+  const submitButton = formElement.querySelector('.popup__submit-button');
   toggleButtonState(inputList, submitButton);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function() {
-      checkInputValidaty(formElement, inputElement, selectors);
+      checkInputValidaty(formElement, inputElement);
       toggleButtonState(inputList, submitButton);
     });
   });
 };
 
 // устанавливаем слушатель событий для всех форм     
-const enableValidation = ({formSelector, ...rest}) => { // добавляем остаточный параметр к функции
-  const formList = Array.from(document.querySelectorAll(formSelector));
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-    setEventListeners(formElement, rest); // используем оператор расширения при вызове в качестве аргумента
+    setEventListeners(formElement);
   });
 };
+
+enableValidation();
