@@ -1,4 +1,6 @@
 import { openPopup, closePopup } from "./modal.js";
+import { popupAddPhoto } from './index.js';
+
 
 // карточки
 const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template
@@ -51,7 +53,7 @@ function addPhotocard(card) {
 function handleCardFormSubmit(evt) {
   addPhotocard({ name: addPhotoInputCaption.value, link: addPhotoInputImage.value });
   evt.preventDefault();
-  closePopup(evt.target.parentElement.parentElement);
+  closePopup(popupAddPhoto);
   addPhotoForm.reset();
   addPhotoForm.elements.submitButton.disabled = true;
 }

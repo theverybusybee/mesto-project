@@ -12,9 +12,10 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const addPhotocardButton = document.querySelector('.profile__add-button');
 
 // попапы
+const popups = document.querySelectorAll('.popup')
 const popupEditAvatar = document.querySelector('.popup__change-avatar');
 const popupEditProfile = document.querySelector('.popup__edit-profile');
-const popupAddPhoto = document.querySelector('.popup__add-photo');
+export const popupAddPhoto = document.querySelector('.popup__add-photo');
 
 // кнопки закрытия модальных окон
 const popupCloseButtons = document.querySelectorAll('.popup__close-button');
@@ -102,20 +103,16 @@ addPhotocardButton.addEventListener('click', function () {
 
 /* ----------------------------- закрытие модального окна ----------------------------*/
 
-// закрываем поп-апы по клику на крестик
-popupCloseButtons.forEach((button) => {
-  button.addEventListener('click', (evt) => {
-    closePopup(evt.target.parentElement.parentElement);
-  })
-})
-
-// закрываем поп-ап кликом на область вокруг форм
-  page.addEventListener('click', function(evt) {
-    if (evt.target.classList.contains('popup')) {
-       closePopup(evt.target);
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if(evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
     };
-  });
-
+    if(evt.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
+    }
+  })  
+})
   /*--------------------------- редактирование информации 'о себе' --------------------------*/
 
 // в функции два параметра, которые изменяют текстовое содержимое в username и caption

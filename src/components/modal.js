@@ -14,10 +14,10 @@ function closePopup(popupElement) {
 }
 
 function closePopupByPressingEsc(evt) {
-  const openedPopup = page.querySelector('.popup_opened');
-  if ((evt.key === 'Escape') && (page.contains(openedPopup))) {
-      closePopup(openedPopup);
-    }
+  if (evt.key === "Escape") {
+    const openedPopup = page.querySelector(".popup_opened");
+    openedPopup && closePopup(openedPopup);
+  }
 }
 
 export { openPopup, closePopup }
