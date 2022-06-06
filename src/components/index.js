@@ -109,13 +109,6 @@ popupCloseButtons.forEach((button) => {
   })
 })
 
-// закрываем поп-ап нажатием на еsc
-  page.addEventListener('keydown', function(evt) {
-    if ((evt.key === 'Escape')) {
-      closePopup(page.querySelector('.popup_opened'));
-    };
-  });
-
 // закрываем поп-ап кликом на область вокруг форм
   page.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('popup')) {
@@ -139,8 +132,6 @@ editProfileForm.addEventListener('submit', (evt) => {
 });
 
 /* ------------------------------------ валидация форм ------------------------------------ */
-
-enableValidation();
 
 enableValidation({
   formSelector: '.popup__form',

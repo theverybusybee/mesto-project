@@ -1,21 +1,19 @@
-export { showError, hideError, setCustomErrorMessage, checkInputValidaty, hasInvalidInput, toggleButtonState, setEventListeners, enableValidation }
-
 /* -------------------------------- валидация форм -------------------------------- */
 
 // показываем сообщение об ошибке
-const showError = (formElement, inputElement, errorMessage) => {
+const showError = (formElement, inputElement, errorMessage, {inputErrorClass, errorClass}) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__form-item_type_error');
+  inputElement.classList.add(inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__form-item-error_active');
+  errorElement.classList.add(errorClass);
 }
 
 // скрываем сообщение об ошибке
-const hideError = (formElement, inputElement) => {
+const hideError = (formElement, inputElement, {inputErrorClass, errorClass}) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__form-item_type_error');
+  inputElement.classList.remove(inputErrorClass);
   errorElement.textContent = '';
-  errorElement.classList.remove('popup__form-item-error_active');
+  errorElement.classList.remove(errorClass);
 }
 
 // указываем кастомные сообщения об ошибке в соответствии с макетом
@@ -37,12 +35,12 @@ const setCustomErrorMessage = (inputElement, errorMessage) => {
 }
 
 // проверяем инпут на валидность и в соответсвии с этим показываем/скрываем сообщения об ошибке
-const checkInputValidaty = (formElement, inputElement) => {
+const checkInputValidaty = (formElement, inputElement, rest) => {
   let errorWarning = '';
   if(!inputElement.validity.valid) {
-    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning));
+    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning), rest);
   } else {
-    hideError(formElement, inputElement);
+    hideError(formElement, inputElement, rest);
   }
 }
 
@@ -63,27 +61,35 @@ const toggleButtonState = (inputList, submitButton) => {
 }
 
 // устанавливаем обработчики событий на все элементы форм
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__form-item'));
-  const submitButton = formElement.querySelector('.popup__submit-button');
+const setEventListeners = (formElement, {inputSelector, submitButtonSelector, ...rest}) => {
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  const submitButton = formElement.querySelector(submitButtonSelector);
   toggleButtonState(inputList, submitButton);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function() {
-      checkInputValidaty(formElement, inputElement);
+      checkInputValidaty(formElement, inputElement, rest);
       toggleButtonState(inputList, submitButton);
     });
   });
 };
 
 // устанавливаем слушатель событий для всех форм     
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = ({formSelector, ...rest}) => {
+  const formList = Array.from(document.querySelectorAll(formSelector));
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-    setEventListeners(formElement);
+    setEventListeners(formElement, rest);
   });
 };
 
-enableValidation();
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-item',
+  submitButtonSelector: '.popup__submit-button',
+  inputErrorClass: 'popup__form-item_type_error',
+  errorClass: 'popup__form-item-error_active'
+});
+
+export { enableValidation }

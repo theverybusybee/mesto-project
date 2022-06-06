@@ -1,4 +1,3 @@
-export { createCard, addPhotocard, handleCardFormSubmit };
 import { openPopup, closePopup } from "./modal.js";
 
 // карточки
@@ -54,4 +53,7 @@ function handleCardFormSubmit(evt) {
   evt.preventDefault();
   closePopup(evt.target.parentElement.parentElement);
   addPhotoForm.reset();
+  addPhotoForm.elements.submitButton.disabled = true;
 }
+
+export { createCard, addPhotocard, handleCardFormSubmit };
