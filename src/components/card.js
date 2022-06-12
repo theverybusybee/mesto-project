@@ -21,12 +21,13 @@ function createCard(item) {
   const photocardImage = photocardElement.querySelector('.photo-cards__list-item-image');
   const photocardCaption = photocardElement.querySelector('.photo-cards__list-item-caption');
   const likeButton = photocardElement.querySelector('.photo-cards__like-button');
+  const deleteButton = photocardElement.querySelector('.photo-cards__delete-button');
 
   photocardImage.src = item['link']; // присваиваем src значение imageValue
   photocardImage.alt = item['name']; // присваиваем src значение imageValue
   photocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
-
-  photocardElement.querySelector('#deleteButton').addEventListener('click', (evt) => {
+  
+  deleteButton.addEventListener('click', (evt) => {
     evt.target.closest('.photo-cards__list-item').remove();
   });
 
@@ -53,10 +54,10 @@ function addPhotocard(card) {
 function handleCardFormSubmit(evt) {
   addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
     .then((res) => {
-      addPhotocard({ name: res.name, link: res.link });
+      addPhotocard({ name: res.name, link: res.link, id: res.owner._id });
       closePopup(popupAddPhoto);
       addPhotoForm.reset();
-      addPhotoForm.elements.submitButton.disabled = true;
+      addPhotoForm.elements.submitButton.disabled = true;  
     })
 }
 

@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { createCard, handleCardFormSubmit } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
-import { changeProfileData, editAvatar, getInitialCards } from './api.js';
+import { getUserData, changeProfileData, editAvatar, getInitialCards } from './api.js';
 
 // body
 const page = document.querySelector('.page');
@@ -37,6 +37,12 @@ const editAvatarInputUrl = editAvatarForm.elements.avatar;
 
 // форма для добавления карточек
 const addPhotoForm = document.forms.addPhoto;
+let myId = '';
+
+  getUserData()
+  .then((res) => {
+    myId = res._id;
+  })
 
 // карточки
 const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
@@ -45,9 +51,14 @@ getInitialCards()
   .then((res) => {
     res.forEach((element) => {
       const photocardElement = createCard(element)
+      const cardUserId = element.owner._id;
+      const deleteButton = photocardElement.querySelector('.photo-cards__delete-button');
       cardsContainer.append(photocardElement); // располагаем карточки в начале списка
+      if(cardUserId == myId) {
+        deleteButton.classList.add('photo-cards__delete-button_type_active');
+      }
     });
-  })
+  });
 
 /* -------------------------------- добавление карточек -------------------------------- */
 

@@ -1,4 +1,5 @@
 .photo-cards__delete-button {
+  display: none;
   background: url(../../../images/buttons/trash1.svg) no-repeat;
   position: absolute;
   border: 0;

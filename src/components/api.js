@@ -22,7 +22,7 @@ const getInitialCards = () => {
 
 const getUserData = () => {
   return fetch(`${config.baseUrl}/users/me`, {
-    headers: config.headers
+    headers: config.headers,
   })
   .then(checkResponse);
 };
@@ -63,4 +63,4 @@ const editAvatar = (photo) => {
    .then(checkResponse);
 };
 
-export { changeProfileData, editAvatar, addCard, getInitialCards }
+export { getUserData, changeProfileData, editAvatar, addCard, getInitialCards }
