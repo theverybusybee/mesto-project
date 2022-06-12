@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { createCard, handleCardFormSubmit } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
-import { changeProfileData, editAvatar } from './api.js';
+import { changeProfileData, editAvatar, getInitialCards } from './api.js';
 
 // body
 const page = document.querySelector('.page');
@@ -41,40 +41,13 @@ const addPhotoForm = document.forms.addPhoto;
 // карточки
 const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
 
-/*----------------------------------------- дефолтные карточки -----------------------------------*/
-
-const initialCards = [
-
-  {
-    name: 'Chrysanthemum',
-    link: 'https://images.unsplash.com/photo-1460039230329-eb070fc6c77c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-  {
-    name: 'White Cherry',
-    link: 'https://images.unsplash.com/photo-1615280825886-fa817c0a06cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-  },
-  {
-    name: 'Camomile',
-    link: 'https://images.unsplash.com/photo-1567954130677-1adcd30d0e5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-  {
-    name: 'Camellia',
-    link: 'https://images.unsplash.com/photo-1618988660091-7077afc52e99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-  },
-  {
-    name: 'Lotus',
-    link: 'https://images.unsplash.com/photo-1599797195012-09c276a9c5f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-  },
-  {
-    name: 'Crocuses',
-    link: 'https://images.unsplash.com/photo-1550595781-9b3686713647?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-];
-
-initialCards.forEach((element) => {
-  const photocardElement = createCard(element)
-  cardsContainer.append(photocardElement); // располагаем карточки в начале списка
-});
+getInitialCards() 
+  .then((res) => {
+    res.forEach((element) => {
+      const photocardElement = createCard(element)
+      cardsContainer.append(photocardElement); // располагаем карточки в начале списка
+    });
+  })
 
 /* -------------------------------- добавление карточек -------------------------------- */
 
@@ -124,7 +97,6 @@ popups.forEach((popup) => {
 editProfileForm.addEventListener('submit', () => {
   changeProfileData(editProfileInputName.value, editProfileInputCaption.value)
     .then((res) => {
-      console.log(res)
       profileUsername.textContent = res.name
       profileCaption.textContent = res.about
       closePopup(popupEditProfile)

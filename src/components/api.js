@@ -15,29 +15,29 @@ const checkResponse = (res) => {
 
 const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
-    headers: config.headers
+    headers: config.headers,
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(checkResponse);
 };
 
-export const getUserData = () => {
+const getUserData = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  .then(checkResponse);
 };
 
-const 
+const addCard = (name, link) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      link: link
+    })
+  })
+  .then(checkResponse)
+}
 
 const changeProfileData = (name, caption) => { // создаем функцию с параметрами name и caption
   return fetch(`${config.baseUrl}/users/me`, { // получаем промис после получения результата от запроса на сервер 
@@ -63,4 +63,4 @@ const editAvatar = (photo) => {
    .then(checkResponse);
 };
 
-export { changeProfileData, editAvatar }
+export { changeProfileData, editAvatar, addCard, getInitialCards }
