@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { createCard, handleCardFormSubmit } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
-import { getInitialCards, getUserData, changeProfileData } from './api.js';
+import { changeProfileData, editAvatar } from './api.js';
 
 // body
 const page = document.querySelector('.page');
@@ -87,9 +87,12 @@ avatarEditButton.addEventListener('click', function() {
 })
 
 editAvatarForm.addEventListener('submit', function(evt) {
-  avatar.src = editAvatarInputUrl.value;
-  evt.preventDefault();
-  closePopup(popupEditAvatar);
+  editAvatar(editAvatarInputUrl.value)
+    .then((res) => {
+      avatar.src = res.avatar;
+      evt.target.reset();
+      closePopup(popupEditAvatar);
+    })
 })
 
 profileEditButton.addEventListener('click', function () {
@@ -118,7 +121,7 @@ popups.forEach((popup) => {
 
 
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
-editProfileForm.addEventListener('submit', (evt) => {
+editProfileForm.addEventListener('submit', () => {
   changeProfileData(editProfileInputName.value, editProfileInputCaption.value)
     .then((res) => {
       console.log(res)
@@ -137,21 +140,3 @@ enableValidation({
   inputErrorClass: 'popup__form-item_type_error',
   errorClass: 'popup__form-item-error_active'
 });
-
-
-
-getInitialCards()
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-getUserData()
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });

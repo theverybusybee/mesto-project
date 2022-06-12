@@ -6,11 +6,18 @@
   }
 }
 
-export const getInitialCards = () => {
+const checkResponse = (res) => {
+  if(res.ok) { // метод fetch возвращает объект ответа
+      return res.json(); // // возвращаем результат работы метода в формате json 
+    }
+    return Promise.reject(`Ошибка: ${res.status}`); // отклоняем промис, чтобы перейти в блок catch, если сервер вернул ошибку
+};
+
+const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then(res => {
+    .then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -23,28 +30,37 @@ export const getUserData = () => {
     headers: config.headers
   })
   .then((res) => {
-    if(res.ok) {
+    if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
   });
 };
 
-export const changeProfileData = (name, caption) => { // создаем функцию с параметрами name и caption
+const 
+
+const changeProfileData = (name, caption) => { // создаем функцию с параметрами name и caption
   return fetch(`${config.baseUrl}/users/me`, { // получаем промис после получения результата от запроса на сервер 
-    method: 'PATCH', // спользуем метод patch для сохранения данных профиля на сервере
+    method: 'PATCH', // используем метод patch для сохранения данных профиля на сервере
     headers: config.headers, // передаем данные для авторизации через const config
     body: JSON.stringify({  // Метод JSON.stringify делает из объекта строку JSON
-      name: name, //
+      name: name,
       about: caption
     })
   })
-  .then((res) => { // Метод fetch возвращает объект ответа
-    if(res.ok) {
-      return res.json(); // // возвращаем результат работы метода в формате json 
-    }
-    return Promise.reject(`Ошибка: ${res.status}`); // отклоняем промис, чтобы перейти в блок catch, если сервер вернул ошибку
-  })
-  
+  .then(checkResponse);
 };
 
+
+const editAvatar = (photo) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH', 
+    headers: config.headers, 
+    body: JSON.stringify({
+      avatar: photo,
+    })
+  })
+   .then(checkResponse);
+};
+
+export { changeProfileData, editAvatar }
