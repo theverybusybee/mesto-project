@@ -33,6 +33,7 @@
 @import url(../blocks/photo-cards/__list-item-caption/photo-cards__list-item-caption.css);
 @import url(../blocks/photo-cards/__like-button/photo-cards__like-button.css);
 @import url(../blocks/photo-cards/__like-button/_active/photo-cards__like-button_active.css);
+@import url(../blocks/photo-cards/__like-counter/photo-cards__like-counter.css);
 @import url(../blocks/photo-cards/__delete-button/photo-cards__delete-button.css);
 @import url(../blocks/photo-cards/__delete-button/_type/photo-cards__delete-button_type_active.css);
 
@@ -54,4 +55,3 @@
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__photocardImageContainer/popup__photocardImageContainer.css);
 @import url(../blocks/popup/__photocardImage/popup__photocardImage.css);
-

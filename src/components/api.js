@@ -63,12 +63,29 @@ const editAvatar = (photo) => {
    .then(checkResponse);
 };
 
-const deletePhotocard = (userId) => {
-  return fetch(`${config.baseUrl}/cards/${userId}`, {
+const deletePhotocard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
      headers: config.headers,
   })
   .then(checkResponse);
 }
 
-export { getUserData, changeProfileData, editAvatar, addCard, getInitialCards, deletePhotocard}
+
+const addLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+     headers: config.headers,
+  })
+  .then(checkResponse);
+}
+
+const removeLike =(cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+     headers: config.headers,
+  })
+  .then(checkResponse);
+}
+
+export { getUserData, changeProfileData, editAvatar, addCard, getInitialCards, deletePhotocard, addLike, removeLike }

@@ -1,6 +1,6 @@
 import { openPopup, closePopup } from "./modal.js";
-import { popupAddPhoto } from './index.js';
-import { addCard, deletePhotocard } from './api.js'
+import { popupAddPhoto, myId } from './index.js';
+import { addCard, deletePhotocard, addLike, removeLike } from './api.js'
 
 // карточки
 const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template
@@ -21,21 +21,56 @@ function createCard(item, itemId) {
   const photocardImage = photocardElement.querySelector('.photo-cards__list-item-image');
   const photocardCaption = photocardElement.querySelector('.photo-cards__list-item-caption');
   const likeButton = photocardElement.querySelector('.photo-cards__like-button');
+  const likeCounter = photocardElement.querySelector('.photo-cards__like-counter');
   const deleteButton = photocardElement.querySelector('.photo-cards__delete-button');
+  const cardUserId = item.owner._id;
 
   photocardImage.src = item['link']; // присваиваем src значение imageValue
   photocardImage.alt = item['name']; // присваиваем src значение imageValue
   photocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
 
-   deleteButton.addEventListener('click', () => {
-    deletePhotocard(itemId)
-    .then(() => {
-      photocardElement.remove();
-    })
-  });
+  // добавляем урну своим карточкам
+  if(cardUserId == myId) {
+    deleteButton.classList.add('photo-cards__delete-button_type_active');
+  };
 
-  likeButton.addEventListener('click', (evt) => {
-    evt.target.classList.toggle('photo-cards__like-button_active');
+  // удаляем карточку с сервера
+  deleteButton.addEventListener('click', () => {
+    deletePhotocard(itemId)
+      .then(() => {
+        photocardElement.remove();
+      })
+    });
+
+  // выводим количество лайков 
+  const displayLikesAmount = (card) => {
+    likeCounter.textContent = card.likes.length;
+  };
+
+  displayLikesAmount(item);
+
+  // отображаем поставленные лайки при загрузке страницы
+  item.likes.forEach((el) => {
+    if(el._id == myId) {
+      likeButton.classList.add('photo-cards__like-button_active');
+    }
+  }) 
+
+  // ставим/удаляем лайк в зависимости от того, проставлен ли он
+  likeButton.addEventListener('click', () => {
+    if(likeButton.classList.contains('photo-cards__like-button_active')) {
+      removeLike(itemId)
+      .then((res) => {
+        likeButton.classList.remove('photo-cards__like-button_active');
+        displayLikesAmount(res);
+      });
+    } else {
+      addLike(itemId)
+      .then((res) => {
+        likeButton.classList.add('photo-cards__like-button_active');
+        displayLikesAmount(res);
+      });
+    };
   });
 
   photocardImage.addEventListener('click', () => {
