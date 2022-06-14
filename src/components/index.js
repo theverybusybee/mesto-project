@@ -37,23 +37,25 @@ const editAvatarInputUrl = editAvatarForm.elements.avatar;
 
 // форма для добавления карточек
 const addPhotoForm = document.forms.addPhoto;
+const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
 let myId = '';
 
-  getUserData()
+getUserData()
   .then((res) => {
+    profileUsername.textContent = res.name;
+    profileCaption.textContent = res.about;
+    avatar.src = res.avatar;
     myId = res._id;
   })
-
-// карточки
-const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
 
 getInitialCards() 
   .then((res) => {
     res.forEach((element) => {
-      const photocardElement = createCard(element)
+      const photocardElement = createCard(element, element._id)
       const cardUserId = element.owner._id;
       const deleteButton = photocardElement.querySelector('.photo-cards__delete-button');
       cardsContainer.append(photocardElement); // располагаем карточки в начале списка
+      console.log(res)
       if(cardUserId == myId) {
         deleteButton.classList.add('photo-cards__delete-button_type_active');
       }
@@ -101,7 +103,7 @@ popups.forEach((popup) => {
     }
   })  
 })
-  /*--------------------------- редактирование информации 'о себе' --------------------------*/
+/*--------------------------- редактирование информации 'о себе' --------------------------*/
 
 
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап

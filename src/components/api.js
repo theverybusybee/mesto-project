@@ -63,4 +63,12 @@ const editAvatar = (photo) => {
    .then(checkResponse);
 };
 
-export { getUserData, changeProfileData, editAvatar, addCard, getInitialCards }
+const deletePhotocard = (userId) => {
+  return fetch(`${config.baseUrl}/cards/${userId}`, {
+    method: 'DELETE',
+     headers: config.headers,
+  })
+  .then(checkResponse);
+}
+
+export { getUserData, changeProfileData, editAvatar, addCard, getInitialCards, deletePhotocard}

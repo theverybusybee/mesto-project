@@ -1,6 +1,6 @@
 import { openPopup, closePopup } from "./modal.js";
 import { popupAddPhoto } from './index.js';
-import { addCard } from './api.js'
+import { addCard, deletePhotocard } from './api.js'
 
 // карточки
 const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template
@@ -16,7 +16,7 @@ const addPhotoForm = document.forms.addPhoto;
 const addPhotoInputImage = addPhotoForm.elements.photocardImage;
 const addPhotoInputCaption = addPhotoForm.elements.photocardCaption;
 
-function createCard(item) {
+function createCard(item, itemId) {
   const photocardElement = photocardTemplate.querySelector('.photo-cards__list-item').cloneNode(true); // клонируем содержимое template
   const photocardImage = photocardElement.querySelector('.photo-cards__list-item-image');
   const photocardCaption = photocardElement.querySelector('.photo-cards__list-item-caption');
@@ -26,9 +26,12 @@ function createCard(item) {
   photocardImage.src = item['link']; // присваиваем src значение imageValue
   photocardImage.alt = item['name']; // присваиваем src значение imageValue
   photocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
-  
-  deleteButton.addEventListener('click', (evt) => {
-    evt.target.closest('.photo-cards__list-item').remove();
+
+   deleteButton.addEventListener('click', () => {
+    deletePhotocard(itemId)
+    .then(() => {
+      photocardElement.remove();
+    })
   });
 
   likeButton.addEventListener('click', (evt) => {
@@ -54,7 +57,7 @@ function addPhotocard(card) {
 function handleCardFormSubmit(evt) {
   addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
     .then((res) => {
-      addPhotocard({ name: res.name, link: res.link, id: res.owner._id });
+      addPhotocard({ name: res.name, link: res.link });
       closePopup(popupAddPhoto);
       addPhotoForm.reset();
       addPhotoForm.elements.submitButton.disabled = true;  
