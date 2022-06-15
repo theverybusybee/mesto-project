@@ -6,6 +6,36 @@ import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
 import { getUserData, changeProfileData, editAvatar, getInitialCards } from './api.js';
 
+/* -------------------------------- открытие модального окна -------------------------------*/
+
+avatarEditButton.addEventListener('click', function() {
+  openPopup(popupEditAvatar);
+})
+
+addPhotocardButton.addEventListener('click', function () {
+  openPopup(popupAddPhoto);
+});
+
+profileEditButton.addEventListener('click', function () {
+  openPopup(popupEditProfile);
+  editProfileInputName.value = profileUsername.textContent;
+  editProfileInputCaption.value = profileCaption.textContent;
+});
+
+/* ----------------------------- закрытие модального окна ----------------------------*/
+
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if(evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    };
+    if(evt.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
+    };
+  }); 
+});
+
+/* -------------------------------- получаем данные пользователя -------------------------------- */
 getUserData()
   .then((res) => {
     profileUsername.textContent = res.name;
@@ -16,28 +46,10 @@ getUserData()
   .catch((err) => {
     console.log(err);
   })
-  
-  getInitialCards() 
-  .then((res) => {
-    res.forEach((element) => {
-      const photocardElement = createCard(element)
-      cardsContainer.append(photocardElement); // располагаем карточки в начале списка
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 
-/* -------------------------------- добавление карточек -------------------------------- */
+/* -------------------------------- редактирование профиля ---------------------------------- */
 
-addPhotoForm.addEventListener('submit', handleCardFormSubmit);
-
-/* -------------------------------- открытие модального окна -------------------------------*/
-
-avatarEditButton.addEventListener('click', function() {
-  openPopup(popupEditAvatar);
-})
-
+// редактирование аватара
 editAvatarForm.addEventListener('submit', function(evt) {
   renderFormLoading(true, editAvatarForm);
   editAvatar(editAvatarInputUrl.value)
@@ -54,32 +66,8 @@ editAvatarForm.addEventListener('submit', function(evt) {
     })
 })
 
-profileEditButton.addEventListener('click', function () {
-  openPopup(popupEditProfile);
-  editProfileInputName.value = profileUsername.textContent;
-  editProfileInputCaption.value = profileCaption.textContent;
-});
-
-addPhotocardButton.addEventListener('click', function () {
-  openPopup(popupAddPhoto);
-});
-
-/* ----------------------------- закрытие модального окна ----------------------------*/
-
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    };
-    if(evt.target.classList.contains('popup__close-button')) {
-      closePopup(popup);
-    };
-  }); 
-});
-/*--------------------------- редактирование информации 'о себе' --------------------------*/
-
-
-//добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
+// редактирование информации 'о себе'
+// добавляем событие: достаем значения из полей и присваиваем их username и caption, отправляем данные на сервер, закрываем поп-ап
 editProfileForm.addEventListener('submit', () => {
   renderFormLoading(true, editProfileForm);
   changeProfileData(editProfileInputName.value, editProfileInputCaption.value)
@@ -95,6 +83,23 @@ editProfileForm.addEventListener('submit', () => {
       renderFormLoading(false, editProfileForm);
     })
 });
+
+/* ------------------------------ получаем данные карточек с сервера ------------------------------ */
+
+  getInitialCards() 
+  .then((res) => {
+    res.forEach((element) => {
+      const photocardElement = createCard(element)
+      cardsContainer.append(photocardElement); // располагаем карточки в начале списка
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
+/* --------------------------------- добавление карточек --------------------------------- */
+
+addPhotoForm.addEventListener('submit', handleCardFormSubmit);
 
 /* ------------------------------------ валидация форм ------------------------------------ */
 
