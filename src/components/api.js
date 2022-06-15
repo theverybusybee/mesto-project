@@ -80,7 +80,7 @@ const addLike = (cardId) => {
   .then(checkResponse);
 }
 
-const removeLike =(cardId) => {
+const removeLike = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
      headers: config.headers,

@@ -1,3 +1,4 @@
+import { renderFormLoading } from "./utils.js";
 import { openPopup, closePopup } from "./modal.js";
 import { popupAddPhoto, myId } from './index.js';
 import { addCard, deletePhotocard, addLike, removeLike } from './api.js'
@@ -16,21 +17,22 @@ const addPhotoForm = document.forms.addPhoto;
 const addPhotoInputImage = addPhotoForm.elements.photocardImage;
 const addPhotoInputCaption = addPhotoForm.elements.photocardCaption;
 
-function createCard(item, itemId) {
+function createCard(item) {
   const photocardElement = photocardTemplate.querySelector('.photo-cards__list-item').cloneNode(true); // клонируем содержимое template
   const photocardImage = photocardElement.querySelector('.photo-cards__list-item-image');
   const photocardCaption = photocardElement.querySelector('.photo-cards__list-item-caption');
   const likeButton = photocardElement.querySelector('.photo-cards__like-button');
   const likeCounter = photocardElement.querySelector('.photo-cards__like-counter');
   const deleteButton = photocardElement.querySelector('.photo-cards__delete-button');
-  const cardUserId = item.owner._id;
+  const itemId = item._id;
+  const userId = item.owner._id;
 
-  photocardImage.src = item['link']; // присваиваем src значение imageValue
-  photocardImage.alt = item['name']; // присваиваем src значение imageValue
-  photocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
+  photocardImage.src = item.link; // присваиваем src значение imageValue
+  photocardImage.alt = item.name; // присваиваем src значение imageValue
+  photocardCaption.textContent = item.name; // заменяем содержимое подписи на captionValue
 
   // добавляем урну своим карточкам
-  if(cardUserId == myId) {
+  if(userId == myId) {
     deleteButton.classList.add('photo-cards__delete-button_type_active');
   };
 
@@ -40,6 +42,9 @@ function createCard(item, itemId) {
       .then(() => {
         photocardElement.remove();
       })
+      .catch((err) => {
+        console.log(err);
+      });
     });
 
   // выводим количество лайков 
@@ -62,14 +67,20 @@ function createCard(item, itemId) {
       removeLike(itemId)
       .then((res) => {
         likeButton.classList.remove('photo-cards__like-button_active');
-        displayLikesAmount(res);
-      });
+        displayLikesAmount(res)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     } else {
       addLike(itemId)
       .then((res) => {
         likeButton.classList.add('photo-cards__like-button_active');
         displayLikesAmount(res);
-      });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     };
   });
 
@@ -89,13 +100,21 @@ function addPhotocard(card) {
   cardsContainer.prepend(photocardElement);
 }
 
-function handleCardFormSubmit(evt) {
+function handleCardFormSubmit(e) {
+  e.preventDefault();
+  renderFormLoading(true, addPhotoForm);
   addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
     .then((res) => {
-      addPhotocard({ name: res.name, link: res.link });
-      closePopup(popupAddPhoto);
+      addPhotocard(res);
       addPhotoForm.reset();
       addPhotoForm.elements.submitButton.disabled = true;  
+      closePopup(popupAddPhoto);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderFormLoading(false, addPhotoForm);
     })
 }
 
