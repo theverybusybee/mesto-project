@@ -1,7 +1,6 @@
-import { photocardTemplate, cardsContainer, popupOpenPhotocard, popupPhotocardImage, popupPhotocardCaption, addPhotoForm, addPhotoInputImage, addPhotoInputCaption, popupAddPhoto, myId } from './const.js'
-import { renderFormLoading } from "./utils.js";
-import { openPopup, closePopup } from "./modal.js";
-import { addCard, deletePhotocard, addLike, removeLike } from './api.js'
+import { photocardTemplate, cardsContainer, popupOpenPhotocard, popupPhotocardImage, popupPhotocardCaption, myId } from './constants.js'
+import { manageCardDelete, toggleLike } from './index.js'
+import { openPopup } from "./modal.js";
 
 function createCard(item) {
   const photocardElement = photocardTemplate.querySelector('.photo-cards__list-item').cloneNode(true); // клонируем содержимое template
@@ -23,22 +22,12 @@ function createCard(item) {
   };
 
   // удаляем карточку с сервера
-  deleteButton.addEventListener('click', () => {
-    deletePhotocard(itemId)
-      .then(() => {
-        photocardElement.remove();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    });
+  manageCardDelete(deleteButton, itemId, photocardElement);
 
-    // выводим количество лайков 
-    const displayLikesAmount = (card) => {
-      likeCounter.textContent = card.likes.length;
-    };
-    
-    displayLikesAmount(item);
+  // лайки
+  displayLikesAmount(likeCounter, item);
+
+  toggleLike(likeButton, itemId, likeCounter);
     
     // отображаем поставленные лайки при загрузке страницы
     item.likes.forEach((item) => {
@@ -46,29 +35,9 @@ function createCard(item) {
         likeButton.classList.add('photo-cards__like-button_active');
       };
     });
-    
-    // ставим/удаляем лайк в зависимости от того, проставлен ли он
-    likeButton.addEventListener('click', () => {
-      if(likeButton.classList.contains('photo-cards__like-button_active')) {
-        removeLike(itemId)
-        .then((res) => {
-          likeButton.classList.remove('photo-cards__like-button_active');
-          displayLikesAmount(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-      } else {
-        addLike(itemId)
-        .then((res) => {
-          likeButton.classList.add('photo-cards__like-button_active');
-          displayLikesAmount(res);
-        })
-        .catch((err) => {
-          console.log(err);
-      });
-    };
-  });
+
+    /*
+    */
 
   photocardImage.addEventListener('click', () => {
     openPopup(popupOpenPhotocard);
@@ -87,21 +56,15 @@ function addPhotocard(card) {
   cardsContainer.prepend(createCard(card));
 }
 
-function handleCardFormSubmit(e) {
-  renderFormLoading(true, addPhotoForm);
-  addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
-  .then((res) => {
-    addPhotocard(res);
-    addPhotoForm.reset();
-    addPhotoForm.elements.submitButton.disabled = true;  
-    closePopup(popupAddPhoto);
-  })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderFormLoading(false, addPhotoForm);
-    })
-}
+  const renderItems = (cards) => {
+    cards.forEach((card) => {
+      cardsContainer.append(createCard(card)); // располагаем карточки в начале списка
+    });
+  }
 
-export { createCard, handleCardFormSubmit };
+   // выводим количество лайков 
+const displayLikesAmount = ( likeCounter, card) => {
+    likeCounter.textContent = card.likes.length;
+  };
+
+export { createCard, addPhotocard, renderItems, displayLikesAmount };
