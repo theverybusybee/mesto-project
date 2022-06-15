@@ -1,21 +1,7 @@
+import { photocardTemplate, cardsContainer, popupOpenPhotocard, popupPhotocardImage, popupPhotocardCaption, addPhotoForm, addPhotoInputImage, addPhotoInputCaption, popupAddPhoto, myId } from './const.js'
 import { renderFormLoading } from "./utils.js";
 import { openPopup, closePopup } from "./modal.js";
-import { popupAddPhoto, myId } from './index.js';
 import { addCard, deletePhotocard, addLike, removeLike } from './api.js'
-
-// карточки
-const photocardTemplate = document.querySelector('.photocardTemplate').content; // содержимое template
-const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
-
-// попап с карточкой
-const popupOpenPhotocard = document.querySelector('.popup__photocardPicture');
-const popupPhotocardImage = popupOpenPhotocard.querySelector('.popup__photocardImage');
-const popupPhotocardCaption = popupOpenPhotocard.querySelector('.popup__photocardCaption');
-
-// форма для добавления карточек
-const addPhotoForm = document.forms.addPhoto;
-const addPhotoInputImage = addPhotoForm.elements.photocardImage;
-const addPhotoInputCaption = addPhotoForm.elements.photocardCaption;
 
 function createCard(item) {
   const photocardElement = photocardTemplate.querySelector('.photo-cards__list-item').cloneNode(true); // клонируем содержимое template
@@ -32,7 +18,7 @@ function createCard(item) {
   photocardCaption.textContent = item.name; // заменяем содержимое подписи на captionValue
 
   // добавляем урну своим карточкам
-  if(userId == myId) {
+  if(userId == myId.id) {
     deleteButton.classList.add('photo-cards__delete-button_type_active');
   };
 
@@ -47,40 +33,40 @@ function createCard(item) {
       });
     });
 
-  // выводим количество лайков 
-  const displayLikesAmount = (card) => {
-    likeCounter.textContent = card.likes.length;
-  };
-
-  displayLikesAmount(item);
-
-  // отображаем поставленные лайки при загрузке страницы
-  item.likes.forEach((el) => {
-    if(el._id == myId) {
-      likeButton.classList.add('photo-cards__like-button_active');
-    }
-  }) 
-
-  // ставим/удаляем лайк в зависимости от того, проставлен ли он
-  likeButton.addEventListener('click', () => {
-    if(likeButton.classList.contains('photo-cards__like-button_active')) {
-      removeLike(itemId)
-      .then((res) => {
-        likeButton.classList.remove('photo-cards__like-button_active');
-        displayLikesAmount(res)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    } else {
-      addLike(itemId)
-      .then((res) => {
+    // выводим количество лайков 
+    const displayLikesAmount = (card) => {
+      likeCounter.textContent = card.likes.length;
+    };
+    
+    displayLikesAmount(item);
+    
+    // отображаем поставленные лайки при загрузке страницы
+    item.likes.forEach((item) => {
+      if(item._id == myId.id) {
         likeButton.classList.add('photo-cards__like-button_active');
-        displayLikesAmount(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      };
+    });
+    
+    // ставим/удаляем лайк в зависимости от того, проставлен ли он
+    likeButton.addEventListener('click', () => {
+      if(likeButton.classList.contains('photo-cards__like-button_active')) {
+        removeLike(itemId)
+        .then((res) => {
+          likeButton.classList.remove('photo-cards__like-button_active');
+          displayLikesAmount(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      } else {
+        addLike(itemId)
+        .then((res) => {
+          likeButton.classList.add('photo-cards__like-button_active');
+          displayLikesAmount(res);
+        })
+        .catch((err) => {
+          console.log(err);
+      });
     };
   });
 
@@ -90,26 +76,26 @@ function createCard(item) {
     popupPhotocardImage.alt = item['name']; // присваиваем src значение imageValue
     popupPhotocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
   });
+
   return photocardElement;
 }
 
 /* -------------------------------- добавление карточек -------------------------------- */
 
+// добавляем карточку в начало списка
 function addPhotocard(card) {
-  const photocardElement = createCard(card);
-  cardsContainer.prepend(photocardElement);
+  cardsContainer.prepend(createCard(card));
 }
 
 function handleCardFormSubmit(e) {
-  e.preventDefault();
   renderFormLoading(true, addPhotoForm);
   addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
-    .then((res) => {
-      addPhotocard(res);
-      addPhotoForm.reset();
-      addPhotoForm.elements.submitButton.disabled = true;  
-      closePopup(popupAddPhoto);
-    })
+  .then((res) => {
+    addPhotocard(res);
+    addPhotoForm.reset();
+    addPhotoForm.elements.submitButton.disabled = true;  
+    closePopup(popupAddPhoto);
+  })
     .catch((err) => {
       console.log(err);
     })

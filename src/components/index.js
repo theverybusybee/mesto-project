@@ -1,52 +1,23 @@
 import '../pages/index.css';
+import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, cardsContainer, myId } from './const.js'
 import { renderFormLoading } from "./utils.js";
 import { createCard, handleCardFormSubmit } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
 import { getUserData, changeProfileData, editAvatar, getInitialCards } from './api.js';
 
-// кнопочки
-const avatarEditButton = document.querySelector('.profile__button-avatar-container');
-const profileEditButton = document.querySelector('.profile__edit-button');
-const addPhotocardButton = document.querySelector('.profile__add-button');
-
-// попапы
-const popups = document.querySelectorAll('.popup')
-const popupEditAvatar = document.querySelector('.popup__change-avatar');
-const popupEditProfile = document.querySelector('.popup__edit-profile');
-export const popupAddPhoto = document.querySelector('.popup__add-photo');
-
-// форма для редактирования профиля
-const editProfileForm = document.forms.editProfile;
-const editProfileInputName = editProfileForm.elements.profileName; // инпут для имени
-const editProfileInputCaption = editProfileForm.elements.profileCaption; // инпут для подписи
-
-// данные профиля
-const profileUsername = document.querySelector('.profile__username'); // имя пользователя
-const profileCaption = document.querySelector('.profile__caption'); // подпись пользователя
-const avatar = document.querySelector('.profile__avatar'); // аватар пользователя
-
-// форма для редактирования аватара
-const editAvatarForm = document.forms.editAvatar;
-const editAvatarInputUrl = editAvatarForm.elements.avatar;
-
-// форма для добавления карточек
-const addPhotoForm = document.forms.addPhoto;
-const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
-export let myId = '';
-
 getUserData()
   .then((res) => {
     profileUsername.textContent = res.name;
     profileCaption.textContent = res.about;
     avatar.src = res.avatar;
-    myId = res._id;
+    myId.id = res._id;
   })
   .catch((err) => {
-      console.log(err);
-    })
-
-getInitialCards() 
+    console.log(err);
+  })
+  
+  getInitialCards() 
   .then((res) => {
     res.forEach((element) => {
       const photocardElement = createCard(element)
@@ -54,8 +25,8 @@ getInitialCards()
     });
   })
   .catch((err) => {
-      console.log(err);
-    })
+    console.log(err);
+  })
 
 /* -------------------------------- добавление карточек -------------------------------- */
 
@@ -102,9 +73,9 @@ popups.forEach((popup) => {
     };
     if(evt.target.classList.contains('popup__close-button')) {
       closePopup(popup);
-    }
-  })  
-})
+    };
+  }); 
+});
 /*--------------------------- редактирование информации 'о себе' --------------------------*/
 
 

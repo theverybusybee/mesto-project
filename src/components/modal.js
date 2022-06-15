@@ -1,5 +1,6 @@
+import { page } from './const.js'
+
 /* -------------------------------- открытие модального окна -------------------------------*/
-const page = document.querySelector('.page');
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_opened');
