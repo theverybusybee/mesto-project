@@ -1,10 +1,10 @@
 import '../pages/index.css';
-import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, cardsContainer, myId } from './const.js'
+import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig } from './constants.js'
 import { renderFormLoading } from "./utils.js";
-import { createCard, handleCardFormSubmit } from './card.js';
+import { renderItems, addPhotocard, displayLikesAmount } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
-import { getUserData, changeProfileData, editAvatar, getInitialCards } from './api.js';
+import { getUserData, changeProfileData, editAvatar, getInitialCards, addCard, deletePhotocard, addLike, removeLike } from './api.js';
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
@@ -35,17 +35,22 @@ popups.forEach((popup) => {
   }); 
 });
 
-/* -------------------------------- получаем данные пользователя -------------------------------- */
-getUserData()
-  .then((res) => {
-    profileUsername.textContent = res.name;
-    profileCaption.textContent = res.about;
-    avatar.src = res.avatar;
-    myId.id = res._id;
+/* ----------------------------- получаем данные пользователя и карточек ------------------------------ */
+Promise.all([getUserData(), getInitialCards()])
+  .then(([userData, cards]) => {
+    saveUserData(userData);
+    renderItems(cards)
   })
-  .catch((err) => {
+  .catch(err => {
     console.log(err);
-  })
+  });
+
+  const saveUserData = (data) => {
+    profileUsername.textContent = data.name;
+    profileCaption.textContent = data.about;
+    avatar.src = data.avatar;
+    myId.id = data._id;
+  } 
 
 /* -------------------------------- редактирование профиля ---------------------------------- */
 
@@ -84,29 +89,65 @@ editProfileForm.addEventListener('submit', () => {
     })
 });
 
-/* ------------------------------ получаем данные карточек с сервера ------------------------------ */
-
-  getInitialCards() 
-  .then((res) => {
-    res.forEach((element) => {
-      const photocardElement = createCard(element)
-      cardsContainer.append(photocardElement); // располагаем карточки в начале списка
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-
 /* --------------------------------- добавление карточек --------------------------------- */
 
 addPhotoForm.addEventListener('submit', handleCardFormSubmit);
 
+function handleCardFormSubmit(e) {
+  renderFormLoading(true, addPhotoForm);
+  addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
+  .then((res) => {
+    addPhotocard(res);
+    addPhotoForm.reset();
+    addPhotoForm.elements.submitButton.disabled = true;  
+    closePopup(popupAddPhoto);
+  })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderFormLoading(false, addPhotoForm);
+    })
+}
+
+/* ------------------------------------ удаление карточки с сервера ------------------------------------ */
+
+export const manageCardDelete = (button, itemId, card) => {
+  button.addEventListener('click', () => {
+    deletePhotocard(itemId)
+      .then(() => {
+        card.remove();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    });
+}
+
+/* -------------------- ставим/удаляем лайк в зависимости от того, проставлен ли он -------------------- */
+export const toggleLike = (likeButton, itemId, likeCounter) => {
+  likeButton.addEventListener('click', () => {
+    if(likeButton.classList.contains('photo-cards__like-button_active')) {
+      removeLike(itemId)
+      .then((res) => {
+        likeButton.classList.remove('photo-cards__like-button_active');
+        displayLikesAmount(likeCounter, res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })} else {
+        addLike(itemId)
+        .then((res) => {
+          likeButton.classList.add('photo-cards__like-button_active');
+          displayLikesAmount(likeCounter, res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      };
+    });
+  }
+
 /* ------------------------------------ валидация форм ------------------------------------ */
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__form-item',
-  submitButtonSelector: '.popup__submit-button',
-  inputErrorClass: 'popup__form-item_type_error',
-  errorClass: 'popup__form-item-error_active'
-});
+enableValidation(validationConfig);

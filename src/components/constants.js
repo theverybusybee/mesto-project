@@ -43,3 +43,11 @@ export const editAvatarInputUrl = editAvatarForm.elements.avatar;
 export const myId = {
   id: '',
 } ;
+
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__form-item',
+  submitButtonSelector: '.popup__submit-button',
+  inputErrorClass: 'popup__form-item_type_error',
+  errorClass: 'popup__form-item-error_active'
+}
