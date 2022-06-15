@@ -1,79 +1,32 @@
 import '../pages/index.css';
+import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, cardsContainer, myId } from './const.js'
+import { renderFormLoading } from "./utils.js";
 import { createCard, handleCardFormSubmit } from './card.js';
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation } from './validate.js';
+import { getUserData, changeProfileData, editAvatar, getInitialCards } from './api.js';
 
-// body
-const page = document.querySelector('.page');
-
-// кнопочки
-const avatarEditButton = document.querySelector('.profile__button-avatar-container');
-const profileEditButton = document.querySelector('.profile__edit-button');
-const addPhotocardButton = document.querySelector('.profile__add-button');
-
-// попапы
-const popups = document.querySelectorAll('.popup')
-const popupEditAvatar = document.querySelector('.popup__change-avatar');
-const popupEditProfile = document.querySelector('.popup__edit-profile');
-export const popupAddPhoto = document.querySelector('.popup__add-photo');
-
-// кнопки закрытия модальных окон
-const popupCloseButtons = document.querySelectorAll('.popup__close-button');
-
-// форма для редактирования профиля
-const editProfileForm = document.forms.editProfile;
-const editProfileInputName = editProfileForm.elements.profileName; // инпут для имени
-const editProfileInputCaption = editProfileForm.elements.profileCaption; // инпут для подписи
-
-// данные профиля
-const profileUsername = document.querySelector('.profile__username'); // имя пользователя
-const profileCaption = document.querySelector('.profile__caption'); // подпись пользователя
-const avatar = document.querySelector('.profile__avatar'); // аватар пользователя
-
-// форма для редактирования аватара
-const editAvatarForm = document.forms.editAvatar;
-const editAvatarInputUrl = editAvatarForm.elements.avatar;
-
-// форма для добавления карточек
-const addPhotoForm = document.forms.addPhoto;
-
-// карточки
-const cardsContainer = document.querySelector('.photo-cards__list'); // список всех карточек
-
-/*----------------------------------------- дефолтные карточки -----------------------------------*/
-
-const initialCards = [
-
-  {
-    name: 'Chrysanthemum',
-    link: 'https://images.unsplash.com/photo-1460039230329-eb070fc6c77c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-  {
-    name: 'White Cherry',
-    link: 'https://images.unsplash.com/photo-1615280825886-fa817c0a06cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-  },
-  {
-    name: 'Camomile',
-    link: 'https://images.unsplash.com/photo-1567954130677-1adcd30d0e5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-  {
-    name: 'Camellia',
-    link: 'https://images.unsplash.com/photo-1618988660091-7077afc52e99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
-  },
-  {
-    name: 'Lotus',
-    link: 'https://images.unsplash.com/photo-1599797195012-09c276a9c5f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-  },
-  {
-    name: 'Crocuses',
-    link: 'https://images.unsplash.com/photo-1550595781-9b3686713647?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80'
-  },
-];
-
-initialCards.forEach((element) => {
-  const photocardElement = createCard(element)
-  cardsContainer.append(photocardElement); // располагаем карточки в начале списка
-});
+getUserData()
+  .then((res) => {
+    profileUsername.textContent = res.name;
+    profileCaption.textContent = res.about;
+    avatar.src = res.avatar;
+    myId.id = res._id;
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+  
+  getInitialCards() 
+  .then((res) => {
+    res.forEach((element) => {
+      const photocardElement = createCard(element)
+      cardsContainer.append(photocardElement); // располагаем карточки в начале списка
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 
 /* -------------------------------- добавление карточек -------------------------------- */
 
@@ -86,9 +39,19 @@ avatarEditButton.addEventListener('click', function() {
 })
 
 editAvatarForm.addEventListener('submit', function(evt) {
-  avatar.src = editAvatarInputUrl.value;
-  evt.preventDefault();
-  closePopup(popupEditAvatar);
+  renderFormLoading(true, editAvatarForm);
+  editAvatar(editAvatarInputUrl.value)
+    .then((res) => {
+      avatar.src = res.avatar;
+      evt.target.reset();
+      closePopup(popupEditAvatar);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderFormLoading(false, editAvatarForm);
+    })
 })
 
 profileEditButton.addEventListener('click', function () {
@@ -110,22 +73,27 @@ popups.forEach((popup) => {
     };
     if(evt.target.classList.contains('popup__close-button')) {
       closePopup(popup);
-    }
-  })  
-})
-  /*--------------------------- редактирование информации 'о себе' --------------------------*/
+    };
+  }); 
+});
+/*--------------------------- редактирование информации 'о себе' --------------------------*/
 
-// в функции два параметра, которые изменяют текстовое содержимое в username и caption
-function editProfile(nameValue, captionValue) {
-  profileUsername.textContent = nameValue;
-  profileCaption.textContent = captionValue;
-}
 
 //добавляем событие: достаем значения из полей и присваиваем их username и caption, предотвращаем обновление страницы, закрываем поп-ап
-editProfileForm.addEventListener('submit', (evt) => {
-  editProfile(editProfileInputName.value, editProfileInputCaption.value);
-  evt.preventDefault();
-  closePopup(popupEditProfile);
+editProfileForm.addEventListener('submit', () => {
+  renderFormLoading(true, editProfileForm);
+  changeProfileData(editProfileInputName.value, editProfileInputCaption.value)
+    .then((res) => {
+      profileUsername.textContent = res.name
+      profileCaption.textContent = res.about
+      closePopup(popupEditProfile)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      renderFormLoading(false, editProfileForm);
+    })
 });
 
 /* ------------------------------------ валидация форм ------------------------------------ */

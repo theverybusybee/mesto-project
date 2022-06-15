@@ -29,11 +29,7 @@
         <section class="profile">
           <div class="profile__main-information">
             <button class="profile__button-avatar-container">
-              <img
-                class="profile__avatar"
-                src="<%=require('./images/profile/bee-icon.jpeg')%>"
-                alt="Аватар пользователя"
-              />
+              <img class="profile__avatar" alt="Аватар пользователя" />
               <img
                 class="profile__avatar-edit-image"
                 src="<%=require('./images/logos/pen.svg')%>"
@@ -97,6 +93,7 @@
             disabled
             type="submit"
             title="Сохранить"
+            name="submitButton"
           >
             Сохранить
           </button>
@@ -148,6 +145,7 @@
             type="submit"
             disabled
             title="Сохранить"
+            name="submitButton"
           >
             Сохранить
           </button>
@@ -226,7 +224,10 @@
         <img class="photo-cards__list-item-image" src="#" alt="#" />
         <div class="photo-cards__content">
           <h2 class="photo-cards__list-item-caption"></h2>
-          <button class="photo-cards__like-button" type="button"></button>
+          <div class="photo-cards__like-container">
+            <button class="photo-cards__like-button" type="button"></button>
+            <div class="photo-cards__like-counter"></div>
+          </div>
         </div>
       </li>
     </template>
