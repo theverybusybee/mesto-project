@@ -41,9 +41,9 @@ function createCard(item) {
 
   photocardImage.addEventListener('click', () => {
     openPopup(popupOpenPhotocard);
-    popupPhotocardImage.src = item['link']; // присваиваем src значение imageValue
-    popupPhotocardImage.alt = item['name']; // присваиваем src значение imageValue
-    popupPhotocardCaption.textContent = item['name']; // заменяем содержимое подписи на captionValue
+    popupPhotocardImage.src = item.link; // присваиваем src значение imageValue
+    popupPhotocardImage.alt = item.name; // присваиваем src значение imageValue
+    popupPhotocardCaption.textContent = item.name; // заменяем содержимое подписи на captionValue
   });
 
   return photocardElement;
@@ -56,11 +56,11 @@ function addPhotocard(card) {
   cardsContainer.prepend(createCard(card));
 }
 
-  const renderItems = (cards) => {
-    cards.forEach((card) => {
-      cardsContainer.append(createCard(card)); // располагаем карточки в начале списка
-    });
-  }
+const renderItems = (cards) => {
+  cards.forEach((card) => {
+    cardsContainer.append(createCard(card)); // располагаем карточки в начале списка
+  });
+}
 
    // выводим количество лайков 
 const displayLikesAmount = ( likeCounter, card) => {

@@ -62,6 +62,7 @@ editAvatarForm.addEventListener('submit', function(evt) {
       avatar.src = res.avatar;
       evt.target.reset();
       closePopup(popupEditAvatar);
+      editAvatarForm.elements.submitButton.disabled = true;  
     })
     .catch((err) => {
       console.log(err);
