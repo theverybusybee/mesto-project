@@ -1,14 +1,17 @@
 import Api from './Api.js'
 
 export default class UserInfo {
-  constructor({ profileUsername, profileCaption }, apiData) {
+  constructor( profileUsername, profileCaption, apiData) {
     this._profileUsername = profileUsername;
     this._profileCaption = profileCaption;
     this._apiData = apiData;
   }
 
   getUserInfo() {
-    
+   return this._apiData
+  .then(res =>{
+    res
+  })
   }
 
   setUserInfo() {
@@ -20,7 +23,7 @@ export default class UserInfo {
 
 /* -------------------------------- редактирование профиля ---------------------------------- */
 
-// редактирование аватара
+/*// редактирование аватара
 editAvatarForm.addEventListener('submit', function(evt) {
   renderFormLoading(true, editAvatarForm);
   editAvatar(editAvatarInputUrl.value)
@@ -54,4 +57,4 @@ editProfileForm.addEventListener('submit', () => {
     .finally(() => {
       renderFormLoading(false, editProfileForm);
     })
-});
+});*/

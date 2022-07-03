@@ -1,10 +1,11 @@
 import '../pages/index.css';
-import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig } from './constants.js'
+import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig, config} from './constants.js'
 import { renderFormLoading } from "./utils.js";
 import { renderItems, addPhotocard, displayLikesAmount } from './Card.js';
 import { openPopup, closePopup } from "./Popup.js";
 import { enableValidation } from './FormValidator.js';
-import { getUserData, changeProfileData, editAvatar, getInitialCards, addCard, deletePhotocard, addLike, removeLike } from './Api.js';
+import Api from './Api.js';
+import UserInfo from './UserInfo.js';
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
@@ -36,7 +37,7 @@ popups.forEach((popup) => {
 });
 
 /* ----------------------------- получаем данные пользователя и карточек ------------------------------ */
-Promise.all([getUserData(), getInitialCards()])
+/* Promise.all([getUserData(), getInitialCards()])
   .then(([userData, cards]) => {
     saveUserData(userData);
     renderItems(cards)
@@ -50,7 +51,7 @@ Promise.all([getUserData(), getInitialCards()])
     profileCaption.textContent = data.about;
     avatar.src = data.avatar;
     myId.id = data._id;
-  } 
+  } */
 
 /* --------------------------------- добавление карточек --------------------------------- */
 
@@ -114,3 +115,16 @@ export const toggleLike = (likeButton, itemId, likeCounter) => {
 /* ------------------------------------ валидация форм ------------------------------------ */
 
 enableValidation(validationConfig);
+
+
+
+
+const api = new Api(config)
+
+function apiCallback() {
+  return api.getUserData()
+}
+
+
+const userInfo = new UserInfo('.profile__username', '.profile__caption', apiCallback()) 
+

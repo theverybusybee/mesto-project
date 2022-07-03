@@ -1,10 +1,4 @@
-const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-11',
-  headers: {
-    authorization: '1284aa67-48fa-4d91-9cb4-d73f077756eb',
-    'Content-Type': 'application/json'
-  }
-}
+
 
 export default class Api {
   constructor(options) {
