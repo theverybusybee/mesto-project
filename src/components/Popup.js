@@ -1,9 +1,9 @@
 import { page } from './constants.js'
 
 
-class popup {
+export default class popup {
   constructor(selector) {
-    this._selector = selector
+    this._selector = selector;
   }
 
   open() {
@@ -20,17 +20,6 @@ class popup {
       openedPopup && close();
     }
   }
-}
-
-class popupWithImage extends popup {
-  _selector = super.selector
-  open() {
-    this._selector.classList.add('popup_opened');
-    this.src = item.link; // присваиваем src значение imageValue
-    this.alt = item.name; // присваиваем src значение imageValue
-    this.textContent = item.name; // заменяем содержимое подписи на captionValue
-  }
-
 }
 
 

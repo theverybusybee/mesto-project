@@ -1,13 +1,15 @@
 import { photocardTemplate, cardsContainer, popupOpenPhotocard, popupPhotocardImage, popupPhotocardCaption, myId } from './constants.js'
 import { manageCardDelete, toggleLike } from './index.js'
-import { openPopup } from "./modal.js";
+import { openPopup } from "./Popup.js";
 
 class Card {
   constructor(item, selector) {
     this._selector = selector;
-    this._name = item.name
-    this._src = item.link
-    this._alt = item.name
+    this._name = item.name;
+    this._id = item._id;
+    this._ownerId = item.owner._id;
+    this._src = item.link;
+    this._alt = item.name;
   }
 
   getElement() { 

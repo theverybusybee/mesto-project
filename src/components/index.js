@@ -1,10 +1,10 @@
 import '../pages/index.css';
 import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig } from './constants.js'
 import { renderFormLoading } from "./utils.js";
-import { renderItems, addPhotocard, displayLikesAmount } from './card.js';
-import { openPopup, closePopup } from "./modal.js";
-import { enableValidation } from './validate.js';
-import { getUserData, changeProfileData, editAvatar, getInitialCards, addCard, deletePhotocard, addLike, removeLike } from './api.js';
+import { renderItems, addPhotocard, displayLikesAmount } from './Card.js';
+import { openPopup, closePopup } from "./Popup.js";
+import { enableValidation } from './FormValidator.js';
+import { getUserData, changeProfileData, editAvatar, getInitialCards, addCard, deletePhotocard, addLike, removeLike } from './Api.js';
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
@@ -51,44 +51,6 @@ Promise.all([getUserData(), getInitialCards()])
     avatar.src = data.avatar;
     myId.id = data._id;
   } 
-
-/* -------------------------------- редактирование профиля ---------------------------------- */
-
-// редактирование аватара
-editAvatarForm.addEventListener('submit', function(evt) {
-  renderFormLoading(true, editAvatarForm);
-  editAvatar(editAvatarInputUrl.value)
-    .then((res) => {
-      avatar.src = res.avatar;
-      evt.target.reset();
-      closePopup(popupEditAvatar);
-      editAvatarForm.elements.submitButton.disabled = true;  
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderFormLoading(false, editAvatarForm);
-    })
-})
-
-// редактирование информации 'о себе'
-// добавляем событие: достаем значения из полей и присваиваем их username и caption, отправляем данные на сервер, закрываем поп-ап
-editProfileForm.addEventListener('submit', () => {
-  renderFormLoading(true, editProfileForm);
-  changeProfileData(editProfileInputName.value, editProfileInputCaption.value)
-    .then((res) => {
-      profileUsername.textContent = res.name
-      profileCaption.textContent = res.about
-      closePopup(popupEditProfile)
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      renderFormLoading(false, editProfileForm);
-    })
-});
 
 /* --------------------------------- добавление карточек --------------------------------- */
 
