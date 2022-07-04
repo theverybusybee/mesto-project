@@ -51,3 +51,11 @@ export const validationConfig = {
   inputErrorClass: 'popup__form-item_type_error',
   errorClass: 'popup__form-item-error_active'
 }
+
+export const config = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-11',
+  headers: {
+    authorization: '1284aa67-48fa-4d91-9cb4-d73f077756eb',
+    'Content-Type': 'application/json'
+  }
+}

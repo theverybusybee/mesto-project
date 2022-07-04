@@ -1,12 +1,51 @@
 import '../pages/index.css';
-import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig } from './constants.js'
+import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig, config } from './constants.js'
 import { renderFormLoading } from "./utils.js";
 import { renderItems, addPhotocard, displayLikesAmount } from './Card.js';
 import { openPopup, closePopup } from "./Popup.js";
 import { enableValidation } from './FormValidator.js';
-import { getUserData, changeProfileData, editAvatar, getInitialCards, addCard, deletePhotocard, addLike, removeLike } from './Api.js';
+import Api from './Api.js';
+import UserInfo from './UserInfo.js'
+
 
 /* -------------------------------- открытие модального окна -------------------------------*/
+const api = new Api(config);
+
+function getUserInfo() {
+  return api.getUserData();
+}
+
+const userInfo = new UserInfo({ profileUsername: editProfileInputName, profileCaption: editProfileInputCaption, profileAvatar: editAvatarInputUrl }, getUserInfo);
+
+userInfo.getUserInfo()
+.then((res) => {
+  profileUsername.textContent = res.name;
+  profileCaption.textContent = res.about;
+  avatar.src = res.avatar;
+});
+
+// редактирование информации 'о себе'
+// добавляем событие: достаем значения из полей и присваиваем их username и caption, отправляем данные на сервер, закрываем поп-ап 
+
+editProfileForm.addEventListener('submit', () => {
+  api.changeProfileData()
+  //renderFormLoading(true, editProfileForm);
+
+  
+
+  //api.changeProfileData({editProfileInputName.value, editProfileInputCaption.value})
+   // .then((res) => {
+   //   profileUsername.textContent = res.name
+    //  profileCaption.textContent = res.about
+    //  closePopup(popupEditProfile)
+  //  })
+   // .catch((err) => {
+   //   console.log(err);
+  //  })
+  //  .finally(() => {
+     // renderFormLoading(false, editProfileForm);
+//    })  
+});
 
 avatarEditButton.addEventListener('click', function() {
   openPopup(popupEditAvatar);
@@ -35,8 +74,11 @@ popups.forEach((popup) => {
   }); 
 });
 
+
+
 /* ----------------------------- получаем данные пользователя и карточек ------------------------------ */
-Promise.all([getUserData(), getInitialCards()])
+/*
+Promise.all([userInfo.getUserInfo(), getInitialCards()])
   .then(([userData, cards]) => {
     saveUserData(userData);
     renderItems(cards)
@@ -51,7 +93,7 @@ Promise.all([getUserData(), getInitialCards()])
     avatar.src = data.avatar;
     myId.id = data._id;
   } 
-
+*/
 /* --------------------------------- добавление карточек --------------------------------- */
 
 addPhotoForm.addEventListener('submit', handleCardFormSubmit);
