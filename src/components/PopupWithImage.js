@@ -1,6 +1,6 @@
-import popup from './Popup.js'
+import Popup from './Popup.js'
 
-class popupWithImage extends popup {
+class PopupWithImage extends Popup {
   constructor(selector) {
     super(selector);
     this._picture = document.querySelector('.popup__photocardImage');

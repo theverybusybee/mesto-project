@@ -63,17 +63,6 @@ profileEditButton.addEventListener('click', function () {
 
 /* ----------------------------- закрытие модального окна ----------------------------*/
 
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    };
-    if(evt.target.classList.contains('popup__close-button')) {
-      closePopup(popup);
-    };
-  }); 
-});
-
 
 
 /* ----------------------------- получаем данные пользователя и карточек ------------------------------ */
