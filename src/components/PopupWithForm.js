@@ -30,6 +30,7 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener("submit", this._submitForm);
+    
   }
 
   // передаем данные инпутов формы в колбек

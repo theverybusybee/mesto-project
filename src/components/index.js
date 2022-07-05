@@ -33,15 +33,15 @@ import PopupWithForm from "./PopupWithForm";
 /* -------------------------------- открытие модального окна -------------------------------*/
 
 avatarEditButton.addEventListener("click", function () {
-  openPopup(popupEditAvatar);
+  avatarForm.open();
 });
 
 addPhotocardButton.addEventListener("click", function () {
-  openPopup(popupAddPhoto);
+  addCardForm.open();
 });
 
 profileEditButton.addEventListener("click", function () {
-  openPopup(popupEditProfile);
+  editProfileForm.open();
   editProfileInputName.value = profileUsername.textContent;
   editProfileInputCaption.value = profileCaption.textContent;
 });
@@ -59,14 +59,28 @@ popups.forEach((popup) => {
   });
 });
 
+const avatarForm = new PopupWithForm({
+  selector: popupEditAvatar,
+
+})
+
+
+
+const addCardForm = new PopupWithForm({
+  selector: popupAddPhoto,
+  
+})
+
 const editProfileForm = new PopupWithForm({
   selector: popupEditProfile,
   submitCallback: (data) => {
     api.changeProfileData(data.profileName, data.profileCaption).then((res) => {
       userInfo.setUserInfo(res);
     });
-  },
+  }
+  
 });
+console.log(editProfileForm._getInputValues())
 
 editProfileForm.setEventListeners();
 /*

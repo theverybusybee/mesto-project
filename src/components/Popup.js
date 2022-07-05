@@ -35,15 +35,8 @@ export default class Popup {
   }
 */
   setEventListeners() {
-    this._selector.addEventListener("click", () => {
-      // добавляем обработчик для открытия попапа
-      this.open();
-    });
     this._selector.addEventListener("mousedown", () => {
       // для закрытия
-      if (this._selector.classList.contains("popup_opened")) {
-        this.close();
-      }
       if (this._selector.classList.contains("popup__close-button")) {
         this.close();
       }
