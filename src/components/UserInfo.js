@@ -1,4 +1,4 @@
-import Api from './Api.js'
+import Api from "./Api.js";
 
 export default class UserInfo {
   constructor({ profileUsername, profileCaption, profileAvatar }, apiData) {
@@ -9,7 +9,6 @@ export default class UserInfo {
   }
 
   getUserInfo() {
-
     return this._apiData();
   }
 
