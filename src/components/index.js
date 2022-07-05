@@ -1,11 +1,12 @@
 import '../pages/index.css';
 import { avatarEditButton, profileEditButton, addPhotocardButton, popups, popupEditAvatar, popupEditProfile,  popupAddPhoto, editProfileForm, editProfileInputName, editProfileInputCaption, profileUsername, profileCaption, avatar, editAvatarForm, editAvatarInputUrl, addPhotoForm, myId, addPhotoInputImage, addPhotoInputCaption, validationConfig, config} from './constants.js'
 import { renderFormLoading } from "./utils.js";
-import { renderItems, addPhotocard, displayLikesAmount } from './Card.js';
+import Card from './card.js';
 import { openPopup, closePopup } from "./Popup.js";
 import { enableValidation } from './FormValidator.js';
 import Api from './Api.js';
 import UserInfo from './UserInfo.js';
+import Section from './Section.js';
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
@@ -121,10 +122,26 @@ enableValidation(validationConfig);
 
 const api = new Api(config)
 
-function apiCallback() {
-  return api.getUserData()
+
+function getUserInfo() {
+  return api.getUserData();
 }
 
+const userInfo = new UserInfo({ profileUsername: editProfileInputName, profileCaption: editProfileInputCaption, profileAvatar: editAvatarInputUrl }, getUserInfo);
 
-const userInfo = new UserInfo('.profile__username', '.profile__caption', apiCallback()) 
+userInfo.getUserInfo()
+.then((res) => {
+  profileUsername.textContent = res.name;
+  profileCaption.textContent = res.about;
+  avatar.src = res.avatar;
+});
 
+
+api.getInitialCards()
+.then((items) => {
+items.forEach((item) => {
+  const card = new Card(item, '.photocardTemplate');
+  const cardElement = card.generate();
+  document.querySelector('.photo-cards__list').append(cardElement);
+})
+})

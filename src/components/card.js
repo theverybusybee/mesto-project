@@ -2,7 +2,7 @@ import { photocardTemplate, cardsContainer, popupOpenPhotocard, popupPhotocardIm
 import { manageCardDelete, toggleLike } from './index.js'
 import { openPopup } from "./Popup.js";
 
-class Card {
+export default class Card {
   constructor(item, selector) {
     this._selector = selector;
     this._name = item.name;
@@ -23,7 +23,7 @@ class Card {
   }
 
   generate() { // объявляем публичный метод generate 
-    this._element = this._getElement(); // получаем карточку от класса Card
+    this._element = this.getElement(); // получаем карточку от класса Card
 
     this._element.querySelector('.photo-cards__list-item-image').src= this._src;
     this._element.querySelector('.photo-cards__list-item-image').alt= this._name;

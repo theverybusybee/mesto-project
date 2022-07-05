@@ -1,25 +1,23 @@
 import Api from './Api.js'
 
 export default class UserInfo {
-  constructor( profileUsername, profileCaption, apiData) {
+  constructor({ profileUsername, profileCaption, profileAvatar }, apiData) {
     this._profileUsername = profileUsername;
     this._profileCaption = profileCaption;
+    this._profileAvatar = profileAvatar;
     this._apiData = apiData;
   }
 
   getUserInfo() {
-   return this._apiData
-  .then(res =>{
-    res
-  })
+
+    return this._apiData();
   }
 
-  setUserInfo() {
-    document.querySelector(this._profileUsername).textContent = this._apiData.name;
-    document.querySelector(this._profileCaption).textContent = this._apiData.about;
+  setUserInfo(data) {
+    this._profileUsername.textContent = data.name;
+    this._profileCaption.textContent = data.about;
   }
 }
-
 
 /* -------------------------------- редактирование профиля ---------------------------------- */
 
