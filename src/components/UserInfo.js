@@ -16,6 +16,10 @@ export default class UserInfo {
     this._profileUsername.textContent = data.name;
     this._profileCaption.textContent = data.about;
   }
+
+  setAvatar(data) {
+    this._profileAvatar.src = data.avatar; 
+  }
 }
 
 /* -------------------------------- редактирование профиля ---------------------------------- */

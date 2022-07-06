@@ -13,10 +13,9 @@ export default class PopupWithForm extends Popup {
   // приватный метод _getInputValues, который собирает данные всех полей формы
   _getInputValues() {
     this._inputValues = {};
-    this._formElements.forEach((element) => {
-      this._inputValues[element.name] = element.value;
-      console.log(this._inputValues);
-    });
+    for(let i = 0; i < this._formElements.length - 1; i += 1) {
+      this._inputValues[this._formElements[i].name] = this._formElements[i].value;
+    }
     return this._inputValues;
   }
 
@@ -30,13 +29,11 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener("submit", this._submitForm);
-    
   }
 
   // передаем данные инпутов формы в колбек
   _submitForm = (evt) => {
-    evt.preventDefault();
-    this._submitCallback(this._getInputValues);
+    this._submitCallback(this._getInputValues());
     this.close();
     //  this._formSubmit.disabled = true;
   };

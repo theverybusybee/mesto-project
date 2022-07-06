@@ -61,15 +61,18 @@ popups.forEach((popup) => {
 
 const avatarForm = new PopupWithForm({
   selector: popupEditAvatar,
+  submitCallback: (data) => {
+    api.editAvatar(data.avatar).then((res) => {
+      userInfo.setAvatar(res);
+    });
+  },
+});
 
-})
-
-
+avatarForm.setEventListeners();
 
 const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
-  
-})
+});
 
 const editProfileForm = new PopupWithForm({
   selector: popupEditProfile,
@@ -77,10 +80,8 @@ const editProfileForm = new PopupWithForm({
     api.changeProfileData(data.profileName, data.profileCaption).then((res) => {
       userInfo.setUserInfo(res);
     });
-  }
-  
+  },
 });
-console.log(editProfileForm._getInputValues())
 
 editProfileForm.setEventListeners();
 /*
@@ -175,9 +176,9 @@ function getUserInfo() {
 
 const userInfo = new UserInfo(
   {
-    profileUsername: editProfileInputName,
-    profileCaption: editProfileInputCaption,
-    profileAvatar: editAvatarInputUrl,
+    profileUsername: profileUsername,
+    profileCaption: profileCaption,
+    profileAvatar: avatar,
   },
   getUserInfo
 );
