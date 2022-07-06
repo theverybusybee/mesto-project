@@ -52,6 +52,7 @@ export default class Card {
     this._element.querySelector('.popup__close-button').addEventListener('click', () => { // при клике на крестик закрываем попап
       this._handleClosePopup();
     });
+    
   }
 
   /*likeCard (likeButton, itemId, likeCounter) {

@@ -30,6 +30,41 @@ import UserInfo from "./UserInfo.js";
 import Section from "./Section.js";
 import PopupWithForm from "./PopupWithForm";
 
+const api = new Api(config);
+
+function getUserInfo() {
+  return api.getUserData();
+}
+
+const userInfo = new UserInfo(
+  {
+    profileUsername: profileUsername,
+    profileCaption: profileCaption,
+    profileAvatar: avatar,
+  },
+  getUserInfo
+);
+
+userInfo.getUserInfo().then((res) => {
+  profileUsername.textContent = res.name;
+  profileCaption.textContent = res.about;
+  avatar.src = res.avatar;
+});
+
+api.getInitialCards().then((items) => {
+  
+  items.forEach((evt) => {
+    const card = new Card(evt, ".photocardTemplate");
+    const cardElement = card.generate();
+    const section = new Section({data: evt, renderer: cardElement}, ".photo-cards__list")
+    section.addItem(cardElement)
+    /*const card = new Card(item, ".photocardTemplate");
+    const cardElement = card.generate();
+    document.querySelector(".photo-cards__list").append(cardElement);*/
+  });
+});
+
+
 /* -------------------------------- открытие модального окна -------------------------------*/
 
 avatarEditButton.addEventListener("click", function () {
@@ -72,7 +107,15 @@ avatarForm.setEventListeners();
 
 const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
-});
+  submitCallback: (data) => {
+    api.addCard(data.photocardCaption, data.photocardImage).then((res) => {
+    const AddedCard = new Card(res, ".photocardTemplate")
+    const cardElement = AddedCard.generate()
+    document.querySelector('.photo-cards__list').prepend(cardElement)
+    });
+}});
+
+addCardForm.setEventListeners();
 
 const editProfileForm = new PopupWithForm({
   selector: popupEditProfile,
@@ -106,11 +149,12 @@ editProfileForm.setEventListeners();
 
 /* --------------------------------- добавление карточек --------------------------------- */
 
-addPhotoForm.addEventListener("submit", handleCardFormSubmit);
+/*addPhotoForm.addEventListener("submit", handleCardFormSubmit);
 
 function handleCardFormSubmit(e) {
   renderFormLoading(true, addPhotoForm);
-  addCard(addPhotoInputCaption.value, addPhotoInputImage.value)
+  const card = new Card()
+  card.generate()
     .then((res) => {
       addPhotocard(res);
       addPhotoForm.reset();
@@ -123,7 +167,7 @@ function handleCardFormSubmit(e) {
     .finally(() => {
       renderFormLoading(false, addPhotoForm);
     });
-}
+}*/
 
 /* ------------------------------------ удаление карточки с сервера ------------------------------------ */
 
@@ -168,31 +212,3 @@ export const toggleLike = (likeButton, itemId, likeCounter) => {
 
 enableValidation(validationConfig);
 
-const api = new Api(config);
-
-function getUserInfo() {
-  return api.getUserData();
-}
-
-const userInfo = new UserInfo(
-  {
-    profileUsername: profileUsername,
-    profileCaption: profileCaption,
-    profileAvatar: avatar,
-  },
-  getUserInfo
-);
-
-userInfo.getUserInfo().then((res) => {
-  profileUsername.textContent = res.name;
-  profileCaption.textContent = res.about;
-  avatar.src = res.avatar;
-});
-
-api.getInitialCards().then((items) => {
-  items.forEach((item) => {
-    const card = new Card(item, ".photocardTemplate");
-    const cardElement = card.generate();
-    document.querySelector(".photo-cards__list").append(cardElement);
-  });
-});
