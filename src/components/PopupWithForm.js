@@ -13,8 +13,9 @@ export default class PopupWithForm extends Popup {
   // приватный метод _getInputValues, который собирает данные всех полей формы
   _getInputValues() {
     this._inputValues = {};
-    for(let i = 0; i < this._formElements.length - 1; i += 1) {
-      this._inputValues[this._formElements[i].name] = this._formElements[i].value;
+    for (let i = 0; i < this._formElements.length - 1; i += 1) {
+      this._inputValues[this._formElements[i].name] =
+        this._formElements[i].value;
     }
     return this._inputValues;
   }
@@ -22,7 +23,7 @@ export default class PopupWithForm extends Popup {
   // перезаписываем родительский метод close, так как при закрытии попапа форма должна ещё и сбрасываться
   close() {
     super.close();
-    //this._form.reset();
+    this._form.reset();
   }
 
   // Перезаписываем родительский метод setEventListeners, тк он должен не только добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы
@@ -35,6 +36,7 @@ export default class PopupWithForm extends Popup {
   _submitForm = (evt) => {
     this._submitCallback(this._getInputValues());
     this.close();
-    //  this._formSubmit.disabled = true;
+    this._form.reset();
+    this._formSubmit.disabled = true;
   };
 }

@@ -12,18 +12,12 @@ import {
   profileUsername,
   profileCaption,
   avatar,
-  editAvatarForm,
-  editAvatarInputUrl,
-  addPhotoForm,
   myId,
-  addPhotoInputImage,
-  addPhotoInputCaption,
   validationConfig,
   config,
 } from "./constants.js";
 import { renderFormLoading } from "./utils.js";
 import Card from "./card.js";
-import { openPopup, closePopup } from "./Popup.js";
 import { enableValidation } from "./FormValidator.js";
 import Api from "./Api.js";
 import UserInfo from "./UserInfo.js";
@@ -52,18 +46,19 @@ userInfo.getUserInfo().then((res) => {
 });
 
 api.getInitialCards().then((items) => {
-  
   items.forEach((evt) => {
     const card = new Card(evt, ".photocardTemplate");
     const cardElement = card.generate();
-    const section = new Section({data: evt, renderer: cardElement}, ".photo-cards__list")
-    section.addItem(cardElement)
+    const section = new Section(
+      { data: evt, renderer: cardElement },
+      ".photo-cards__list"
+    );
+    section.addItem(cardElement);
     /*const card = new Card(item, ".photocardTemplate");
     const cardElement = card.generate();
     document.querySelector(".photo-cards__list").append(cardElement);*/
   });
 });
-
 
 /* -------------------------------- открытие модального окна -------------------------------*/
 
@@ -82,7 +77,7 @@ profileEditButton.addEventListener("click", function () {
 });
 
 /* ----------------------------- закрытие модального окна ----------------------------*/
-
+/*
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("popup_opened")) {
@@ -93,7 +88,7 @@ popups.forEach((popup) => {
     }
   });
 });
-
+*/
 const avatarForm = new PopupWithForm({
   selector: popupEditAvatar,
   submitCallback: (data) => {
@@ -109,11 +104,12 @@ const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
   submitCallback: (data) => {
     api.addCard(data.photocardCaption, data.photocardImage).then((res) => {
-    const AddedCard = new Card(res, ".photocardTemplate")
-    const cardElement = AddedCard.generate()
-    document.querySelector('.photo-cards__list').prepend(cardElement)
+      const AddedCard = new Card(res, ".photocardTemplate");
+      const cardElement = AddedCard.generate();
+      document.querySelector(".photo-cards__list").prepend(cardElement);
     });
-}});
+  },
+});
 
 addCardForm.setEventListeners();
 
@@ -211,4 +207,3 @@ export const toggleLike = (likeButton, itemId, likeCounter) => {
 /* ------------------------------------ валидация форм ------------------------------------ */
 
 enableValidation(validationConfig);
-

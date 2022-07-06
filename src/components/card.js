@@ -134,7 +134,7 @@ function createCard(item) {
     */
 
   photocardImage.addEventListener('click', () => {
-    openPopup(popupOpenPhotocard);
+    //openPopup(popupOpenPhotocard);
     popupPhotocardImage.src = item.link; // присваиваем src значение imageValue
     popupPhotocardImage.alt = item.name; // присваиваем src значение imageValue
     popupPhotocardCaption.textContent = item.name; // заменяем содержимое подписи на captionValue
