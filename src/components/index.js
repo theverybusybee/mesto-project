@@ -82,7 +82,8 @@ api.getInitialCards().then((items) => {
         popupWithImage.open(evt);
       },
       toggleLike,
-      myId.id
+      myId.id,
+      manageCardDelete
     );
     const cardElement = card.generate();
     const section = new Section(
@@ -133,6 +134,18 @@ const avatarForm = new PopupWithForm({
 
 avatarForm.setEventListeners();
 
+const manageCardDelete = (evt, card, cardElement) => {
+  if(evt.target.classList.contains("photo-cards__delete-button_type_active"))
+        api.deletePhotocard(card.getCardId())
+          .then(() => {
+            cardElement.remove();
+            console.log(cardElement)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
+
 const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
   submitCallback: (data) => {
@@ -142,7 +155,8 @@ const addCardForm = new PopupWithForm({
         popupWithImage.open(res);
       },
       toggleLike,
-      myId.id
+      myId.id,
+      manageCardDelete
       );
       const cardElement = AddedCard.generate();
       document.querySelector(".photo-cards__list").prepend(cardElement);
@@ -205,18 +219,6 @@ function handleCardFormSubmit(e) {
 }*/
 
 /* ------------------------------------ удаление карточки с сервера ------------------------------------ */
-
-const manageCardDelete = (button, itemId, card) => {
-  button.addEventListener("click", () => {
-    deletePhotocard(itemId)
-      .then(() => {
-        card.remove();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-};
 
 /* ------------------------------------ валидация форм ------------------------------------ */
 

@@ -10,7 +10,7 @@ import { manageCardDelete, toggleLike } from "./index.js";
 import { openPopup } from "./Popup.js";
 
 export default class Card {
-  constructor(item, selector, handleCardClick, toggleLike, userId) {
+  constructor(item, selector, handleCardClick, toggleLike, userId, deleteCard) {
     this._selector = selector;
     this._item = item;
     this._name = item.name;
@@ -22,6 +22,7 @@ export default class Card {
     this._likes = item.likes;
     this._likesAmount = item.likes.length;
     this._toggleLike = toggleLike;
+    this._deleteCard = deleteCard;
     this._userId = userId;
   }
 
@@ -50,6 +51,9 @@ export default class Card {
     );
     this._elLikeBtn = this._element.querySelector(".photo-cards__like-button");
     this._elCounter = this._element.querySelector(".photo-cards__like-counter");
+    this._elDeleteBtn = this._element.querySelector(
+      ".photo-cards__delete-button"
+    );
 
     this._elImg.src = this._src;
     this._elImg.alt = this._name;
@@ -62,6 +66,10 @@ export default class Card {
         this._elLikeBtn.classList.add("photo-cards__like-button_active");
       }
     });
+
+    if (this._ownerId == this._userId) {
+      this._elDeleteBtn.classList.add("photo-cards__delete-button_type_active");
+    }
 
     this._elCounter.textContent = this._likesAmount;
 
@@ -87,8 +95,12 @@ export default class Card {
 
     this._elLikeBtn.addEventListener("click", (evt) => {
       this._toggleLike(evt, this);
-      console.log(this)
+      console.log(this);
     });
+
+    this._elDeleteBtn.addEventListener('click', (evt) => {
+      this._deleteCard(evt, this, this._element);
+    })
   }
 }
 
