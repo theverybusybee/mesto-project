@@ -15,6 +15,7 @@ import {
   myId,
   validationConfig,
   config,
+  popupOpenPhotocard,
 } from "./constants.js";
 import { renderFormLoading } from "./utils.js";
 import Card from "./card.js";
@@ -23,18 +24,19 @@ import Api from "./Api.js";
 import UserInfo from "./UserInfo.js";
 import Section from "./Section.js";
 import PopupWithForm from "./PopupWithForm";
+import PopupWithImage from "./PopupWithImage";
 
 const api = new Api(config);
 
 function getUserInfo() {
   return api.getUserData();
 }
-
 const userInfo = new UserInfo(
   {
     profileUsername: profileUsername,
     profileCaption: profileCaption,
     profileAvatar: avatar,
+    userId: myId,
   },
   getUserInfo
 );
@@ -43,20 +45,51 @@ userInfo.getUserInfo().then((res) => {
   profileUsername.textContent = res.name;
   profileCaption.textContent = res.about;
   avatar.src = res.avatar;
+  myId.id = res._id;
 });
+
+const popupWithImage = new PopupWithImage(popupOpenPhotocard);
+popupWithImage.setEventListeners();
+
+/* -------------------- ставим/удаляем лайк в зависимости от того, проставлен ли он -------------------- */
+
+const toggleLike = (evt, card) => {
+  if (evt.target.classList.contains("photo-cards__like-button_active")) {
+    api.removeLike(card.getCardId())
+      .then((res) => {
+        card.removeLike(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else if (!evt.target.classList.contains("photo-cards__like-button_active")) {
+    api.addLike(card.getCardId())
+      .then((res) => {
+        card.addLike(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
 
 api.getInitialCards().then((items) => {
   items.forEach((evt) => {
-    const card = new Card(evt, ".photocardTemplate");
+    const card = new Card(
+      evt,
+      ".photocardTemplate",
+      () => {
+        popupWithImage.open(evt);
+      },
+      toggleLike,
+      myId.id
+    );
     const cardElement = card.generate();
     const section = new Section(
       { data: evt, renderer: cardElement },
       ".photo-cards__list"
     );
     section.addItem(cardElement);
-    /*const card = new Card(item, ".photocardTemplate");
-    const cardElement = card.generate();
-    document.querySelector(".photo-cards__list").append(cardElement);*/
   });
 });
 
@@ -167,7 +200,7 @@ function handleCardFormSubmit(e) {
 
 /* ------------------------------------ удаление карточки с сервера ------------------------------------ */
 
-export const manageCardDelete = (button, itemId, card) => {
+const manageCardDelete = (button, itemId, card) => {
   button.addEventListener("click", () => {
     deletePhotocard(itemId)
       .then(() => {
@@ -176,31 +209,6 @@ export const manageCardDelete = (button, itemId, card) => {
       .catch((err) => {
         console.log(err);
       });
-  });
-};
-
-/* -------------------- ставим/удаляем лайк в зависимости от того, проставлен ли он -------------------- */
-export const toggleLike = (likeButton, itemId, likeCounter) => {
-  likeButton.addEventListener("click", () => {
-    if (likeButton.classList.contains("photo-cards__like-button_active")) {
-      removeLike(itemId)
-        .then((res) => {
-          likeButton.classList.remove("photo-cards__like-button_active");
-          displayLikesAmount(likeCounter, res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      addLike(itemId)
-        .then((res) => {
-          likeButton.classList.add("photo-cards__like-button_active");
-          displayLikesAmount(likeCounter, res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
   });
 };
 

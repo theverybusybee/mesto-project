@@ -28,7 +28,6 @@ export default class Popup {
       if (evt.target.classList.contains("popup_opened")) {
         this.close();
       }
-      console.log(evt.target);
     });
   }
 

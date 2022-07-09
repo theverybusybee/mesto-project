@@ -6,17 +6,16 @@ export default class PopupWithForm extends Popup {
     super(selector);
     this._submitCallback = submitCallback;
     this._form = this._selector.querySelector(".popup__form");
-    this._formElements = this._form.elements;
-    this._formSubmit = this._formElements.submitButton;
+    this._formSubmit = this._form.elements.submitButton;
   }
 
   // приватный метод _getInputValues, который собирает данные всех полей формы
   _getInputValues() {
+    this._inputList = this._form.querySelectorAll('.popup__form-item')
     this._inputValues = {};
-    for (let i = 0; i < this._formElements.length - 1; i += 1) {
-      this._inputValues[this._formElements[i].name] =
-        this._formElements[i].value;
-    }
+    this._inputList.forEach((input) => {
+       this._inputValues[input.name] = input.value;
+    })
     return this._inputValues;
   }
 
@@ -39,4 +38,8 @@ export default class PopupWithForm extends Popup {
     this._form.reset();
     this._formSubmit.disabled = true;
   };
+
+  _addLike() {
+    this._selector.classList.add('')
+  }
 }

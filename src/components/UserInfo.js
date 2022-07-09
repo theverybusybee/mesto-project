@@ -1,10 +1,11 @@
 import Api from "./Api.js";
 
 export default class UserInfo {
-  constructor({ profileUsername, profileCaption, profileAvatar }, apiData) {
+  constructor({ profileUsername, profileCaption, profileAvatar, userId }, apiData) {
     this._profileUsername = profileUsername;
     this._profileCaption = profileCaption;
     this._profileAvatar = profileAvatar;
+    this._userId = userId;
     this._apiData = apiData;
   }
 
