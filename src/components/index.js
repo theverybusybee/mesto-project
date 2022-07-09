@@ -137,7 +137,13 @@ const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
   submitCallback: (data) => {
     api.addCard(data.photocardCaption, data.photocardImage).then((res) => {
-      const AddedCard = new Card(res, ".photocardTemplate");
+      const AddedCard = new Card(res, ".photocardTemplate",
+      () => {
+        popupWithImage.open(res);
+      },
+      toggleLike,
+      myId.id
+      );
       const cardElement = AddedCard.generate();
       document.querySelector(".photo-cards__list").prepend(cardElement);
     });
