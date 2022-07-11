@@ -1,87 +1,98 @@
-/* -------------------------------- валидация форм -------------------------------- */
+export default class FormValidator {
+  constructor(config, form) {
+    this._config = config;
+    this._form = form;
+    this._formInputs = Array.from(
+      form.querySelectorAll(this._config.inputSelector)
+    );
+    this._submitButton = form.elements.submitButton;
 
-// показываем сообщение об ошибке
-const showError = (formElement, inputElement, errorMessage, {inputErrorClass, errorClass}) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add(inputErrorClass);
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add(errorClass);
-}
+    // показываем сообщение об ошибке
+    this._showError = (inputElement, errorMessage) => {
+      const errorElement = this._form.querySelector(
+        `.${inputElement.id}-error`
+      );
+      inputElement.classList.add(this._config.inputErrorClass);
+      errorElement.textContent = errorMessage;
+      errorElement.classList.add(this._config.errorClass);
+    };
 
-// скрываем сообщение об ошибке
-const hideError = (formElement, inputElement, {inputErrorClass, errorClass}) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove(inputErrorClass);
-  errorElement.textContent = '';
-  errorElement.classList.remove(errorClass);
-}
+    // скрываем сообщение об ошибке
+    this._hideError = (inputElement) => {
+      const errorElement = this._form.querySelector(
+        `.${inputElement.id}-error`
+      );
+      inputElement.classList.remove(this._config.inputErrorClass);
+      errorElement.textContent = "";
+      errorElement.classList.remove(this._config.errorClass);
+    };
 
-// указываем кастомные сообщения об ошибке в соответствии с макетом
-const setCustomErrorMessage = (inputElement, errorMessage) => {
-  if(inputElement.type.toString() === 'url') {
-      switch (inputElement.validity.typeMismatch) {
-        case true: errorMessage = 'Введите адрес сайта.';
-        break;
-        case false: errorMessage = '';
-        break;
-      } 
-    } 
-    if (inputElement.validity.valueMissing) {
-      errorMessage = 'Вы пропустили это поле.'
-    } else { 
-      errorMessage = inputElement.validationMessage;
-    }
-    return errorMessage;
-}
+    // проверяем инпут на валидность и в соответсвии с этим показываем/скрываем сообщения об ошибке
+    this._checkInputValidaty = (inputElement) => {
+      let errorWarning = "";
+      if (!inputElement.validity.valid) {
+        this._showError(
+          inputElement,
+          this._setCustomErrorMessage(inputElement, errorWarning)
+        );
+      } else {
+        this._hideError(inputElement);
+      }
+    };
 
-// проверяем инпут на валидность и в соответсвии с этим показываем/скрываем сообщения об ошибке
-const checkInputValidaty = (formElement, inputElement, rest) => {
-  let errorWarning = '';
-  if(!inputElement.validity.valid) {
-    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning), rest);
-  } else {
-    hideError(formElement, inputElement, rest);
+    // изменяем состояние кнопки в зависимости от валидности инпутов
+    this._toggleButtonState = () => {
+      if (this._hasInvalidInput()) {
+        this._submitButton.disabled = true;
+      } else {
+        this._submitButton.disabled = false;
+      }
+    };
+
+    // указываем кастомные сообщения об ошибке в соответствии с макетом
+    this._setCustomErrorMessage = (inputElement, errorMessage) => {
+      if (inputElement.type.toString() === "url") {
+        switch (inputElement.validity.typeMismatch) {
+          case true:
+            errorMessage = "Введите адрес сайта.";
+            break;
+          case false:
+            errorMessage = "";
+            break;
+        }
+      }
+      if (inputElement.validity.valueMissing) {
+        errorMessage = "Вы пропустили это поле.";
+      } else {
+        errorMessage = inputElement.validationMessage;
+      }
+      return errorMessage;
+    };
   }
-}
 
-// проверяем все поля формы на валидность
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-};
-
-// изменяем состояние кнопки в зависимости от валидности инпутов
-const toggleButtonState = (inputList, submitButton) => {
-  if (hasInvalidInput(inputList)) {
-    submitButton.disabled = true;
-  } else {
-    submitButton.disabled = false;
-  }
-}
-
-// устанавливаем обработчики событий на все элементы форм
-const setEventListeners = (formElement, {inputSelector, submitButtonSelector, ...rest}) => {
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
-  const submitButton = formElement.querySelector(submitButtonSelector);
-  toggleButtonState(inputList, submitButton);
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function() {
-      checkInputValidaty(formElement, inputElement, rest);
-      toggleButtonState(inputList, submitButton);
+  // проверяем все поля формы на валидность
+  _hasInvalidInput = () => {
+    return this._formInputs.some((inputElement) => {
+      return !inputElement.validity.valid;
     });
-  });
-};
+  };
 
-// устанавливаем слушатель событий для всех форм     
-const enableValidation = ({formSelector, ...rest}) => {
-  const formList = Array.from(document.querySelectorAll(formSelector));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
+  // устанавливаем обработчики событий на все элементы форм
+  setEventListeners() {
+    this._toggleButtonState();
+    this._formInputs.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        this._checkInputValidaty(inputElement);
+        this._toggleButtonState();
+      });
+    });
+  }
+
+  // устанавливаем слушатель событий для всех форм
+  enableValidation() {
+    this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    setEventListeners(formElement, rest);
-  });
-};
-
-export { enableValidation }
+    this.setEventListeners();
+  }
+}

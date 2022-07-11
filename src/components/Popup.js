@@ -1,5 +1,3 @@
-import { page } from "./constants.js";
-
 export default class Popup {
   constructor(selector) {
     this._selector = selector;
@@ -38,24 +36,3 @@ export default class Popup {
     this._hendleBgClose();
   }
 }
-/* -------------------------------- открытие модального окна -------------------------------*/
-/*
-function openPopup(popupElement) {
-  popupElement.classList.add("popup_opened");
-  page.addEventListener("keydown", closePopupByPressingEsc);
-}
-*/
-/* ------------------------------- закрытие модального окна -------------------------------*/
-/*
-function closePopup(popupElement) {
-  popupElement.classList.remove("popup_opened");
-  page.removeEventListener("keydown", closePopupByPressingEsc);
-}
-
-function closePopupByPressingEsc(evt) {
-  if (evt.key === "Escape") {
-    const openedPopup = page.querySelector(".popup_opened");
-    openedPopup && closePopup(openedPopup);
-  }
-}
-*/
