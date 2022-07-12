@@ -19,7 +19,6 @@ import {
   config, // набор настроек для получения данных с сервера
   popupOpenPhotocard, // попап с картинкой
 } from "../components/constants.js";
-import { renderFormLoading } from "../components/utils.js";
 import Card from "../components/Card.js";
 import Api from "../components/Api.js";
 import UserInfo from "../components/UserInfo.js";
@@ -30,31 +29,18 @@ import FormValidator from "../components/FormValidator";
 
 /* -------------------------------- открытие модального окна ------------------------------ */
 
-function createCard(item) {
-  const card = new Card(
-    item,
-    ".photocardTemplate",
-    () => {
-      popupWithImage.open(item);
-    },
-    toggleLike,
-    myId.id,
-    manageCardDelete
-  );
-  const cardElement = card.generate();
-return cardElement
-}
-
-
 avatarEditButton.addEventListener("click", function () {
+  editAvatarFormValidation.resetValidation();
   avatarForm.open();
 });
 
 addPhotocardButton.addEventListener("click", function () {
+  addCardFormValidation.resetValidation();
   addCardForm.open();
 });
 
 profileEditButton.addEventListener("click", function () {
+  profileFormValidation.resetValidation();
   editProfileForm.open();
   editProfileInputName.value = profileUsername.textContent;
   editProfileInputCaption.value = profileCaption.textContent;
@@ -80,20 +66,20 @@ const userInfo = new UserInfo(
   getUserInfo
 );
 
-Promise.all([userInfo.getUserInfo(),  api.getInitialCards()])
-.then(([userData, cards]) => {
-  userInfo.setUserInfo(userData);
-  userInfo.setAvatar(userData);
-  myId.id = userData._id;
+Promise.all([userInfo.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData);
+    userInfo.setAvatar(userData);
+    myId.id = userData._id;
 
-  cards.forEach((evt) => {
-    const section = new Section(
-      { data: evt, renderer: createCard(evt) },
-      ".photo-cards__list"
-    );
-    section.addItem(createCard(evt));
-  });
-})
+    cards.forEach((evt) => {
+      const section = new Section(
+        { data: evt, renderer: createCard(evt) },
+        ".photo-cards__list"
+      );
+      section.addItem(createCard(evt));
+    });
+  })
 
   .catch((err) => {
     console.log(err);
@@ -110,10 +96,10 @@ popupWithImage.setEventListeners();
 const editProfileForm = new PopupWithForm({
   selector: popupEditProfile,
   submitCallback: (data) => {
-    editProfileForm.renderFormLoading(true);
     api
       .changeProfileData(data.profileName, data.profileCaption)
       .then((res) => {
+        editProfileForm.renderFormLoading(true);
         userInfo.setUserInfo(res);
       })
       .catch((err) => {
@@ -131,17 +117,17 @@ editProfileForm.setEventListeners();
 const avatarForm = new PopupWithForm({
   selector: popupEditAvatar,
   submitCallback: (data) => {
-    avatarForm.renderFormLoading(true);
     api
       .editAvatar(data.avatar)
       .then((res) => {
         userInfo.setAvatar(res);
+        avatarForm.renderFormLoading(true);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        editProfileForm.renderFormLoading(false);
+        avatarForm.renderFormLoading(false);
       });
   },
 });
@@ -152,17 +138,17 @@ avatarForm.setEventListeners();
 const addCardForm = new PopupWithForm({
   selector: popupAddPhoto,
   submitCallback: (data) => {
-    addCardForm.renderFormLoading(true);
     api
       .addCard(data.photocardCaption, data.photocardImage)
       .then((res) => {
+        addCardForm.renderFormLoading(true);
         document.querySelector(".photo-cards__list").prepend(createCard(res));
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        editProfileForm.renderFormLoading(false);
+        addCardForm.renderFormLoading(false);
       });
   },
 });
@@ -171,7 +157,20 @@ addCardForm.setEventListeners();
 
 /* --------------------------------- добавление карточек ---------------------------------- */
 
-
+function createCard(item) {
+  const card = new Card(
+    item,
+    ".photocardTemplate",
+    () => {
+      popupWithImage.open(item);
+    },
+    toggleLike,
+    myId.id,
+    manageCardDelete
+  );
+  const cardElement = card.generate();
+  return cardElement;
+}
 
 /* ------------- ставим/удаляем лайк в зависимости от того, проставлен ли он -------------- */
 
@@ -222,12 +221,12 @@ const profileFormValidation = new FormValidator(
 
 profileFormValidation.enableValidation();
 
-const avatarFormValidation = new FormValidator(
+const addCardFormValidation = new FormValidator(
   validationConfig,
   addPhotoFormElement
 );
 
-avatarFormValidation.enableValidation();
+addCardFormValidation.enableValidation();
 
 const editAvatarFormValidation = new FormValidator(
   validationConfig,

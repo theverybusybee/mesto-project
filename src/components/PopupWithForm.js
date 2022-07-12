@@ -44,10 +44,10 @@ export default class PopupWithForm extends Popup {
   }
 
   renderFormLoading(isLoading) {
-  if(isLoading) {
-    this._formSubmit.textContent = 'Coхранение...'
-  } else {
-    this._formSubmit.textContent = 'Сохранить'
+    if (isLoading) {
+      this._formSubmit.textContent = "Coхранение...";
+    } else {
+      this._formSubmit.textContent = "Сохранить";
+    }
   }
-}
 }
