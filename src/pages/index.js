@@ -87,14 +87,14 @@ Promise.all([userInfo.getUserInfo(), api.getInitialCards()])
 
 /* --------------------------- слушатели для попапа с картинкой --------------------------- */
 
-const popupWithImage = new PopupWithImage(popupOpenPhotocard);
+const popupWithImage = new PopupWithImage('.popup__photocardPicture');
 popupWithImage.setEventListeners();
 
 /* -------------------------------- функциональность форм --------------------------------- */
 
 // редактирование профиля
 const editProfileForm = new PopupWithForm({
-  selector: popupEditProfile,
+  selector: '.popup__edit-profile',
   submitCallback: (data) => {
     api
       .changeProfileData(data.profileName, data.profileCaption)
@@ -115,7 +115,7 @@ editProfileForm.setEventListeners();
 
 // редактирование аватарки
 const avatarForm = new PopupWithForm({
-  selector: popupEditAvatar,
+  selector: '.popup__change-avatar',
   submitCallback: (data) => {
     api
       .editAvatar(data.avatar)
@@ -136,7 +136,7 @@ avatarForm.setEventListeners();
 
 // добавление карточек
 const addCardForm = new PopupWithForm({
-  selector: popupAddPhoto,
+  selector: '.popup__add-photo',
   submitCallback: (data) => {
     api
       .addCard(data.photocardCaption, data.photocardImage)
