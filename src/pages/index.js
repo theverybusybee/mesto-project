@@ -30,6 +30,22 @@ import FormValidator from "../components/FormValidator";
 
 /* -------------------------------- открытие модального окна ------------------------------ */
 
+function createCard(item) {
+  const card = new Card(
+    item,
+    ".photocardTemplate",
+    () => {
+      popupWithImage.open(item);
+    },
+    toggleLike,
+    myId.id,
+    manageCardDelete
+  );
+  const cardElement = card.generate();
+return cardElement
+}
+
+
 avatarEditButton.addEventListener("click", function () {
   avatarForm.open();
 });
@@ -64,14 +80,21 @@ const userInfo = new UserInfo(
   getUserInfo
 );
 
-userInfo
-  .getUserInfo()
-  .then((res) => {
-    profileUsername.textContent = res.name;
-    profileCaption.textContent = res.about;
-    avatar.src = res.avatar;
-    myId.id = res._id;
-  })
+Promise.all([userInfo.getUserInfo(),  api.getInitialCards()])
+.then(([userData, cards]) => {
+  userInfo.setUserInfo(userData);
+  userInfo.setAvatar(userData);
+  myId.id = userData._id;
+
+  cards.forEach((evt) => {
+    const section = new Section(
+      { data: evt, renderer: createCard(evt) },
+      ".photo-cards__list"
+    );
+    section.addItem(createCard(evt));
+  });
+})
+
   .catch((err) => {
     console.log(err);
   });
@@ -133,18 +156,7 @@ const addCardForm = new PopupWithForm({
     api
       .addCard(data.photocardCaption, data.photocardImage)
       .then((res) => {
-        const AddedCard = new Card(
-          res,
-          ".photocardTemplate",
-          () => {
-            popupWithImage.open(res);
-          },
-          toggleLike,
-          myId.id,
-          manageCardDelete
-        );
-        const cardElement = AddedCard.generate();
-        document.querySelector(".photo-cards__list").prepend(cardElement);
+        document.querySelector(".photo-cards__list").prepend(createCard(res));
       })
       .catch((err) => {
         console.log(err);
@@ -159,31 +171,7 @@ addCardForm.setEventListeners();
 
 /* --------------------------------- добавление карточек ---------------------------------- */
 
-api
-  .getInitialCards()
-  .then((items) => {
-    items.forEach((evt) => {
-      const card = new Card(
-        evt,
-        ".photocardTemplate",
-        () => {
-          popupWithImage.open(evt);
-        },
-        toggleLike,
-        myId.id,
-        manageCardDelete
-      );
-      const cardElement = card.generate();
-      const section = new Section(
-        { data: evt, renderer: cardElement },
-        ".photo-cards__list"
-      );
-      section.addItem(cardElement);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+
 
 /* ------------- ставим/удаляем лайк в зависимости от того, проставлен ли он -------------- */
 

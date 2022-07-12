@@ -8,7 +8,7 @@ export default class PopupWithImage extends popup {
   }
 
   open(item) {
-    this._selector.classList.add("popup_opened");
+    super.open();
     this._picture.src = item.link; // присваиваем src значение imageValue
     this._picture.alt = item.name; // присваиваем src значение imageValue
     this._caption.textContent = item.name; // заменяем содержимое подписи на captionValue
