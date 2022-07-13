@@ -3,21 +3,13 @@ import {
   avatarEditButton, // кнопка редактирования аватара
   profileEditButton, // кнопка редактирования профиля
   addPhotocardButton, // кнопка добавления карточек
-  popupEditAvatar, // попап редактирования аватара
-  popupEditProfile, // попап редактирования профиля
-  popupAddPhoto, // попап добавления карточек
-  editProfileFormElement, // форма редактирования профиля
-  addPhotoFormElement, // форма добавления карточек
-  editAvatarFormElement, // форма редактирования аватара
   editProfileInputName, // инпут для редактирования имени
   editProfileInputCaption, // инпут для редактирования подписи
   profileUsername, // имя пользователя
   profileCaption, // подпись
-  avatar,
   myId, // айди пользователя
   validationConfig, // набор данных для валидации
   config, // набор настроек для получения данных с сервера
-  popupOpenPhotocard, // попап с картинкой
 } from "../components/constants.js";
 import Card from "../components/Card.js";
 import Api from "../components/Api.js";
@@ -58,9 +50,9 @@ function getUserInfo() {
 
 const userInfo = new UserInfo(
   {
-    profileUsername: profileUsername,
-    profileCaption: profileCaption,
-    profileAvatar: avatar,
+    profileUsername: '.profile__username',
+    profileCaption: '.profile__caption',
+    profileAvatar: '.profile__avatar',
     userId: myId,
   },
   getUserInfo
@@ -71,13 +63,12 @@ Promise.all([userInfo.getUserInfo(), api.getInitialCards()])
     userInfo.setUserInfo(userData);
     userInfo.setAvatar(userData);
     myId.id = userData._id;
-
-    cards.forEach((evt) => {
+    cards.forEach((card) => {
       const section = new Section(
-        { data: evt, renderer: createCard(evt) },
+        { data: card, renderer: createCard(card) },
         ".photo-cards__list"
       );
-      section.addItem(createCard(evt));
+      section.addItemAppend(createCard(card));
     });
   })
 
@@ -101,6 +92,7 @@ const editProfileForm = new PopupWithForm({
       .then((res) => {
         editProfileForm.renderFormLoading(true);
         userInfo.setUserInfo(res);
+        editProfileForm.close();
       })
       .catch((err) => {
         console.log(err);
@@ -113,6 +105,7 @@ const editProfileForm = new PopupWithForm({
 
 editProfileForm.setEventListeners();
 
+
 // редактирование аватарки
 const avatarForm = new PopupWithForm({
   selector: '.popup__change-avatar',
@@ -122,6 +115,7 @@ const avatarForm = new PopupWithForm({
       .then((res) => {
         userInfo.setAvatar(res);
         avatarForm.renderFormLoading(true);
+        avatarForm.close();
       })
       .catch((err) => {
         console.log(err);
@@ -142,7 +136,12 @@ const addCardForm = new PopupWithForm({
       .addCard(data.photocardCaption, data.photocardImage)
       .then((res) => {
         addCardForm.renderFormLoading(true);
-        document.querySelector(".photo-cards__list").prepend(createCard(res));
+        const section = new Section(
+        { renderer: createCard(res) },
+        ".photo-cards__list"
+      );
+        section.addItemPrepend(createCard(res));
+        addCardForm.close();
       })
       .catch((err) => {
         console.log(err);
@@ -216,21 +215,21 @@ const manageCardDelete = (evt, card, cardElement) => {
 
 const profileFormValidation = new FormValidator(
   validationConfig,
-  editProfileFormElement
+  '.popup__form_content_profile'
 );
 
 profileFormValidation.enableValidation();
 
 const addCardFormValidation = new FormValidator(
   validationConfig,
-  addPhotoFormElement
+  '.popup__form_content_addingPhoto'
 );
 
 addCardFormValidation.enableValidation();
 
 const editAvatarFormValidation = new FormValidator(
   validationConfig,
-  editAvatarFormElement
+  '.popup__form_content_editAvatar'
 );
 
 editAvatarFormValidation.enableValidation();

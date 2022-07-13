@@ -32,7 +32,7 @@ export default class PopupWithForm extends Popup {
   }
 
   // передаем данные инпутов формы в колбек
-  _submitForm = (evt) => {
+  _submitForm = () => {
     this._submitCallback(this._getInputValues());
     this.close();
   };

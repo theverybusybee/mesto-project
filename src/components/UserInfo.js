@@ -3,9 +3,9 @@ export default class UserInfo {
     { profileUsername, profileCaption, profileAvatar, userId },
     apiData
   ) {
-    this._profileUsername = profileUsername;
-    this._profileCaption = profileCaption;
-    this._profileAvatar = profileAvatar;
+    this._profileUsername = document.querySelector(profileUsername);
+    this._profileCaption = document.querySelector(profileCaption);
+    this._profileAvatar = document.querySelector(profileAvatar);
     this._userId = userId;
     this._apiData = apiData;
   }
