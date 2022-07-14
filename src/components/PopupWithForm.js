@@ -5,7 +5,7 @@ export default class PopupWithForm extends Popup {
   constructor({ selector, submitCallback }) {
     super(selector);
     this._submitCallback = submitCallback;
-    this._form = this._selector.querySelector(".popup__form");
+    this._form = this._popup.querySelector(".popup__form");
     this._formInputs = this._form.querySelectorAll(".popup__form-item");
     this._formSubmitBtn = this._form.elements.submitButton;
   }
@@ -37,7 +37,7 @@ export default class PopupWithForm extends Popup {
   };
 
   _addLike() {
-    this._selector.classList.add("");
+    this._popup.classList.add("");
   }
 
   renderFormLoading(isLoading) {
