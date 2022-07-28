@@ -2,7 +2,7 @@
   "name": "mesto-project",
   "version": "1.0.0",
   "description": "sharing photo platform",
-  "main": "./src/components/index.js",
+  "main": "./src/pages/index.js",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack serve"
