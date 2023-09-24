@@ -26,7 +26,8 @@ export const validationConfig = {
 }
 
 export const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-11',
+  // baseUrl: 'https://nomoreparties.co/v1/plus-cohort-11',
+  baseUrl: 'http://domainname.theverybusybee.nomoredomainsrocks.ru',
   headers: {
     authorization: '1284aa67-48fa-4d91-9cb4-d73f077756eb',
     'Content-Type': 'application/json'

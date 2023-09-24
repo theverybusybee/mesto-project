@@ -186,8 +186,7 @@ const toggleLike = (evt, card) => {
   } else if (
     !evt.target.classList.contains("photo-cards__like-button_active")
   ) {
-    api
-      .addLike(card.getCardId())
+    api.addLike(card.getCardId())
       .then((res) => {
         card.addLike(res);
       })
