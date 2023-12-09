@@ -10,9 +10,9 @@
 
 ## Demo
 
-![Alt text](./src/images/demo.png "demo")
-
 Задеплоенное приложение: https://theverybusybee.github.io/mesto-project/
+
+![Alt text](./src/images/demo.png "demo")
 
 ## Запуск приложения
 
